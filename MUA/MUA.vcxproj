@@ -21,7 +21,8 @@
   <ItemGroup>
     <ClCompile Include="HashMap.cpp" />
     <ClCompile Include="Input.c" />
-    <ClCompile Include="main.c" />
+    <ClCompile Include="Main2.c" />
+    <ClCompile Include="Value.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="HashMap.h" />

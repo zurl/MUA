@@ -20,13 +20,16 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="main.c">
-      <Filter>源文件</Filter>
-    </ClCompile>
     <ClCompile Include="HashMap.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="Input.c">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Value.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Main2.c">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
