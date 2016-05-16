@@ -18,6 +18,14 @@
       <Platform>x64</Platform>
     </ProjectConfiguration>
   </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="HashMap.cpp" />
+    <ClCompile Include="Input.c" />
+    <ClCompile Include="main.c" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="HashMap.h" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{FD4D1CE5-A1F8-4AC8-8D63-8A689C6B1F3E}</ProjectGuid>
     <RootNamespace>MUA</RootNamespace>
@@ -71,9 +79,10 @@
   <PropertyGroup />
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
-      <WarningLevel>Level3</WarningLevel>
+      <WarningLevel>EnableAllWarnings</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
+      <CompileAs>CompileAsC</CompileAs>
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
