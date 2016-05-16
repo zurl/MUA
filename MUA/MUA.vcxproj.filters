@@ -18,6 +18,9 @@
     <ClInclude Include="HashMap.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="Value.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="HashMap.cpp">
@@ -29,7 +32,10 @@
     <ClCompile Include="Value.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="Main2.c">
+    <ClCompile Include="Main.c">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Runtime.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

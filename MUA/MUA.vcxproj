@@ -21,11 +21,13 @@
   <ItemGroup>
     <ClCompile Include="HashMap.cpp" />
     <ClCompile Include="Input.c" />
-    <ClCompile Include="Main2.c" />
+    <ClCompile Include="Main.c" />
+    <ClCompile Include="Runtime.cpp" />
     <ClCompile Include="Value.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="HashMap.h" />
+    <ClInclude Include="Value.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{FD4D1CE5-A1F8-4AC8-8D63-8A689C6B1F3E}</ProjectGuid>
