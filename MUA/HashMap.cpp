@@ -13,7 +13,7 @@ HashMap * createHashMap() {
 	return hashmap;
 }
 
-int hashString(char * str) {
+int hashString(const char * str) {
 	unsigned int seed = 131;
 	unsigned int hash = 0;
 	while (*str){
@@ -26,7 +26,7 @@ void resizeHashMap(HashMap * hashmap) {
 	//µ±size >= len * 2Ê± resize;
 	//TODO:: next
 }
-HashNode * createNewNode(char * key, Value * data, HashNode * next) {
+HashNode * createNewNode(const char * key, const Value * data, HashNode * next) {
 	HashNode * node = (HashNode *)malloc(sizeof(HashNode));
 	node->next = next;
 	node->data = (Value *)malloc(sizeof(Value));
@@ -43,7 +43,7 @@ void freeNode(HashNode * node) {
 	free(node);
 }
 	
-void setElement(HashMap * hashMap, char * key, Value * data) {
+void setElement(HashMap * hashMap, const char * key, const Value * data) {
 	HashNode * node = hashMap->data[hashString(key) % hashMap->len];
 	if (node == NULL) {
 		hashMap->data[hashString(key) % hashMap->len] = createNewNode(key, data, NULL);
@@ -65,7 +65,7 @@ void setElement(HashMap * hashMap, char * key, Value * data) {
 	}
 }
 
-Value * getElement(HashMap * hashMap, char * key) {
+Value * getElement(HashMap * hashMap, const char * key) {
 	HashNode * node = hashMap->data[hashString(key) % hashMap->len];
 	while (node != NULL) {
 		if (strcmp(node->key, key) == 0) {
@@ -76,7 +76,7 @@ Value * getElement(HashMap * hashMap, char * key) {
 	return NULL;
 }
 
-void removeElement(HashMap * hashMap, char * key) {
+void removeElement(HashMap * hashMap, const char * key) {
 	HashNode * node = hashMap->data[hashString(key) % hashMap->len];
 	if (strcmp(node->key, key) == 0) {
 		hashMap->data[hashString(key) % hashMap->len] = node->next;

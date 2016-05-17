@@ -1,9 +1,9 @@
 #pragma once
 
-typedef union UValueDate ValueData;
+typedef struct SValue Value;
 
 typedef struct SListNode {
-	ValueData * data;
+	Value * data;
 	struct SListNode * next;
 }ListNode;
 
@@ -12,10 +12,11 @@ typedef struct SList {
 }List;
 
 typedef enum EValueType {
-	boolean, integer, real, list, word
+	boolean, integer, real, list, word,
+	function, null
 }ValueType;
 
-typedef union UValueDate {
+typedef union UValueData {
 	long long integer;
 	double real;
 	char * word;
@@ -28,4 +29,5 @@ typedef struct SValue {
 }Value;
 
 void freeValue(Value * value);
-Value * copyValue(Value * value);
+Value * copyValue(const Value * value);
+Value * createValue(const Token * token);

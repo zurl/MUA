@@ -7,6 +7,12 @@
 #include "Value.h"
 //×Ö·û´¦Àí
 
+char * copyString(const char *src) {
+	char *ret = (char *)malloc(sizeof(strlen(src) + 1));
+	strcpy(ret, src);
+	return ret;
+}
+
 Buffer * getBufferFromFile(char * fileName) {
 	FILE * file = fopen(fileName, "r");
 	if (file == NULL) {
@@ -110,3 +116,4 @@ TokenList * getTokenListFromBuffer(Buffer * buffer) {
 TokenList * getTokenListFromList(List * list) {
 	return NULL;
 }
+

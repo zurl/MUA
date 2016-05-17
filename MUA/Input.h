@@ -23,3 +23,5 @@ typedef struct STokenList {
 Buffer * getBufferFromConsole(void);
 Buffer * getBufferFromFile(char * fileName);
 TokenList * getTokenListFromBuffer(Buffer * buffer);
+
+char * copyString(const char *src);
