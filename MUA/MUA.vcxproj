@@ -23,11 +23,18 @@
     <ClCompile Include="Input.c" />
     <ClCompile Include="Main.c" />
     <ClCompile Include="Runtime.cpp" />
+    <ClCompile Include="Symbol.cpp" />
     <ClCompile Include="Value.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="HashMap.h" />
+    <ClInclude Include="Input.h" />
+    <ClInclude Include="Runtime.h" />
+    <ClInclude Include="Symbol.h" />
     <ClInclude Include="Value.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="test.mua" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{FD4D1CE5-A1F8-4AC8-8D63-8A689C6B1F3E}</ProjectGuid>
@@ -86,6 +93,7 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <CompileAs>CompileAsC</CompileAs>
+      <PreprocessorDefinitions>_MBCS;%(PreprocessorDefinitions);_CRT_SECURE_NO_WARNINGS</PreprocessorDefinitions>
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">

@@ -21,6 +21,15 @@
     <ClInclude Include="Value.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="Input.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Runtime.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Symbol.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="HashMap.cpp">
@@ -38,5 +47,13 @@
     <ClCompile Include="Runtime.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="Symbol.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="test.mua">
+      <Filter>资源文件</Filter>
+    </None>
   </ItemGroup>
 </Project>

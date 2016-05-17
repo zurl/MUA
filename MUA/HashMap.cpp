@@ -2,25 +2,14 @@
 #include<stdlib.h>
 #include<string.h>
 #include "Value.h"
+#include "HashMap.h"
 const int pirmeArray[] = {17,37,79,163,331,673,1361,2729,5471,10949,21911,43853,87719,175447,350899,701819,1403641,2807303,5614657,11229331,22458671, 44917381,89834777,179669557,359339171,718678369,1437356741,2147483647};
-
-typedef struct SHashNode {
-	char * key;
-	Value * data;
-	struct SHashNode * next;
-}HashNode;
-
-typedef struct SHashMap {
-	HashNode ** data;
-	int len;
-	int size;
-}HashMap;
 
 HashMap * createHashMap() {
 	HashMap * hashmap = (HashMap *)malloc(sizeof(HashMap));
 	hashmap->len = 17;
 	hashmap->size = 0;
-	hashmap->data = (HashNode *)(malloc(sizeof(HashNode * ) * hashmap->len));
+	hashmap->data = (HashNode **)(malloc(sizeof(HashNode * ) * hashmap->len));
 	return hashmap;
 }
 
@@ -39,9 +28,12 @@ void resizeHashMap(HashMap * hashmap) {
 }
 HashNode * createNewNode(char * key, Value * data, HashNode * next) {
 	HashNode * node = (HashNode *)malloc(sizeof(HashNode));
-	node->next = NULL;
-	node->data = (char *)malloc(sizeof(char) * (strlen(data) + 1));
-	strcpy(node->data, data);
+	node->next = next;
+	node->data = (Value *)malloc(sizeof(Value));
+	node->data = copyValue(data);
+	node->key = (char *)malloc(sizeof(char) * (strlen(key) + 1));
+	strcpy(node->key, key);
+//	strcpy(node->data, data);
 	return node;
 }
 
@@ -52,16 +44,17 @@ void freeNode(HashNode * node) {
 }
 	
 void setElement(HashMap * hashMap, char * key, Value * data) {
-	HashNode * node = hashMap->data[hashString(key,hashMap) % hashMap->len];
+	HashNode * node = hashMap->data[hashString(key) % hashMap->len];
 	if (node == NULL) {
-		hashMap->data[hashString(key, hashMap) % hashMap->len] = createNewNode(key, data, NULL);
+		hashMap->data[hashString(key) % hashMap->len] = createNewNode(key, data, NULL);
 		return;
 	}
 	while (node != NULL) {
 		if (strcmp(node->key, key) == 0) {
 			free(node->data);
-			node->data = (char *)malloc(sizeof(char) * (strlen(data) + 1));
-			strcpy(node->data, data);
+			node->data = (Value *)malloc(sizeof(Value));
+			//node->data = data;
+			node->data = copyValue(data);
 			return;
 		}
 		if (node->next == NULL) {
@@ -73,10 +66,10 @@ void setElement(HashMap * hashMap, char * key, Value * data) {
 }
 
 Value * getElement(HashMap * hashMap, char * key) {
-	HashNode * node = hashMap->data[hashString(key, hashMap) % hashMap->len];
+	HashNode * node = hashMap->data[hashString(key) % hashMap->len];
 	while (node != NULL) {
 		if (strcmp(node->key, key) == 0) {
-			return node->key;
+			return node->data;
 		}
 		node = node->next;
 	}
@@ -84,9 +77,9 @@ Value * getElement(HashMap * hashMap, char * key) {
 }
 
 void removeElement(HashMap * hashMap, char * key) {
-	HashNode * node = hashMap->data[hashString(key, hashMap) % hashMap->len];
+	HashNode * node = hashMap->data[hashString(key) % hashMap->len];
 	if (strcmp(node->key, key) == 0) {
-		hashMap->data[hashString(key, hashMap) % hashMap->len] = node->next;
+		hashMap->data[hashString(key) % hashMap->len] = node->next;
 		freeNode(node);
 		return;
 	}

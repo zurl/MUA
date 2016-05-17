@@ -1,0 +1,4 @@
+make 'hello 1
+make 'shit 2.5
+make 'fuck 'shit
+test 1 [ 10 fuck shit -6.5 '24]
