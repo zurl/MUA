@@ -21,29 +21,39 @@ void printValue(const Value * value) {
 void freeValue(Value * value) {
 
 }
+List * copyList(List * list);
 Value * copyValue(const Value * value) {
 	Value * ret = (Value *)malloc(sizeof(Value));
+	ret->type = value->type;
 	if (value->type == VNull) {
-
+		
 	}
-	else if (value->type == VBoolean) {
-
+	else if (value->type == VBoolean || value->type == VInteger) {
+		ret->data->integer = ret->data->integer;
 	}
 	else if (value->type == VReal) {
-
+		ret->data->real = ret->data->real;
 	}
-	else if (value->type == VInteger) {
-
-	}
-	else if (value->type == VWord) {
-
-	}
-	else if (value->type == VLiteral) {
-
+	else if (value->type == VWord || value->type == VLiteral) {
+		ret->data->word = copyString(value->data->word);
 	}
 	else if (value->type == VList) {
-
+		ret->data->list = copyList(value->data->list);
 	}
+}
+
+ListNode * copyListDfs(ListNode * x) {
+	if (x == NULL)return NULL;
+	else {
+		ListNode * node = (ListNode*)malloc(sizeof(ListNode));
+		node->data = copyValue(x->data);
+		node->next = copyListDfs(x->next);
+	}
+}
+List * copyList(List * list) {
+	List * ret = (List *)malloc(sizeof(List));
+	ret->node = copyListDfs(ret->node);
+	return ret;
 }
 Value * createValue(const Token * token) {
 	if (token->type == TLiteral ) {

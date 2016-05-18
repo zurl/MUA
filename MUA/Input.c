@@ -58,7 +58,7 @@ TokenList * getTokenListFromBuffer(Buffer * buffer) {
 	Token * node = (Token * )malloc(sizeof(Token));
 	node->type = TLSB;
 	char * cache = (char *)malloc(sizeof(char) * 256);
-	int now = 0,st;
+	int now = 0,st = 0;
 	while (buffer->st <= buffer->ed) {
 		char c = buffer->data[buffer->st];
 		if (c == ' ' || c== '\n' ) {

@@ -25,6 +25,7 @@ Value * eval(ListInstance * listInstance) {
 	if (listInstance->now == NULL) {
 
 	}
+	
 	if (listInstance->now->data->type == VWord) {
 		Value *command = getSymbol(symbolTable, listInstance->now->data->data->word);
 		if (command == NULL || (command->type != VFunction &&
@@ -38,7 +39,7 @@ Value * eval(ListInstance * listInstance) {
 		//create new symbol table
 		
 		Value * ret;
-		if (command->data->list->node->next->data->type == VList) {
+		if (command->type == VList) {
 			SymbolTable * tmp = (SymbolTable *)malloc(sizeof(SymbolTable));
 			tmp->hashMap = createHashMap();
 			tmp->next = symbolTable;
@@ -62,7 +63,8 @@ Value * eval(ListInstance * listInstance) {
 			freeSymbolTable(tmp);
 		}
 		else {
-			Function * func = command->data->list->node->next->data->data->function;
+			Function * func = command->data->function;
+			listInstance->now = listInstance->now->next;
 			if (func->argc == 1) {
 				registerA = eval(listInstance);
 			}

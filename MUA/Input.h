@@ -27,7 +27,7 @@ Value * createValue(const Token * token);
 Buffer * getBufferFromConsole(void);
 Buffer * getBufferFromFile(char * fileName);
 TokenList * getTokenListFromBuffer(Buffer * buffer);
-//List * getListFromTokenList(TokenList * tokenList);
+List * getListFromTokenList(TokenList * tokenList);
 
 char * copyString(const char *src);
 
