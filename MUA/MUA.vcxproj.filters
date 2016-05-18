@@ -30,6 +30,9 @@
     <ClInclude Include="Symbol.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="Function.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Input.c">

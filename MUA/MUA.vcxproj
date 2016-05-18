@@ -28,6 +28,7 @@
     <ClCompile Include="Value.c" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Function.h" />
     <ClInclude Include="HashMap.h" />
     <ClInclude Include="Input.h" />
     <ClInclude Include="Runtime.h" />

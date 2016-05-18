@@ -1,4 +1,6 @@
 #include "Input.h"
+#include "Runtime.h"
+#include "Function.h"
 
 int main(int argc,char * argv) {
 	//决定交互模式
@@ -12,6 +14,12 @@ int main(int argc,char * argv) {
 		Buffer * buffer = getBufferFromFile("D:\\DataBase\\MUA\\MUA\\test.mua");
 		TokenList * tokenList = getTokenListFromBuffer(buffer);
 		List * list = getListFromTokenList(tokenList);
+		ListInstance * newInstance = (ListInstance *)malloc(sizeof(ListInstance));
+		newInstance->now = list->node;
+		initGlobalSymbolTable();
+		initSystemFunction();
+		call(newInstance);
+
 		return 0;
 	}
 	return 0;

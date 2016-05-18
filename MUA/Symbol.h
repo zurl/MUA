@@ -4,8 +4,10 @@
 #include "HashMap.h"
 typedef struct SSymbolTable {
 	HashMap * hashMap;
-	struct SymbolTable * next;
+	struct SSymbolTable * next;
 }SymbolTable;
+
+
 
 Value * getSymbol(SymbolTable * symbolTable, const char * key);
 

@@ -10,6 +10,8 @@ HashMap * createHashMap() {
 	hashmap->len = 17;
 	hashmap->size = 0;
 	hashmap->data = (HashNode **)(malloc(sizeof(HashNode * ) * hashmap->len));
+	for (int i = 0; i <= hashmap->len - 1; i++)
+		hashmap->data[i] = NULL;
 	return hashmap;
 }
 

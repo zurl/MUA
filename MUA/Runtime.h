@@ -4,7 +4,16 @@
 #include "Value.h"
 #include "Input.h"
 #include "Symbol.h"
-Value * eval(TokenList * tokenList);
 
+typedef struct SListInstance {
+ListNode * now;
+}ListInstance;
+
+Value * eval(ListInstance * listInstance);
+Value * call(ListInstance * listInstance);
+void initGlobalSymbolTable(void);
 extern SymbolTable * symbolTable;
+extern Value * registerA;
+extern Value * registerB;
+
 #endif
