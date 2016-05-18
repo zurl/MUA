@@ -5,32 +5,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-Value * getValueFromNumber(long long x) {
-	Value * ret = (Value *)malloc(sizeof(Value));
-	ret->data = (ValueData *)malloc(sizeof(ValueData));
-	ret->type = VInteger;
-	ret->data->integer = x;
-	return ret;
-}
-Value * getValueFromReal(double x) {
-	Value * ret = (Value *)malloc(sizeof(Value));
-	ret->data = (ValueData *)malloc(sizeof(ValueData));
-	ret->type = VReal;
-	ret->data->real = x;
-	return ret;
-}
-Value * getValueFromStr(const char * x) {
-	Value * ret = (Value *)malloc(sizeof(Value));
-	ret->data = (ValueData *)malloc(sizeof(ValueData));
-	ret->type = VWord;
-	ret->data->word = copyString(x);
-	return ret;
-}
-Value * getValueFromNull() {
-	Value * ret = (Value *)malloc(sizeof(Value));
-	ret->type = VNull;
-	return ret;
-}
+
 
 typedef struct SSysFunc {
 	char * name;

@@ -15,7 +15,7 @@
 * `read`：返回一个从标准输入读取的数字或单词
 * `readlinst`：返回一个从标准输入读取的一行，构成一个列表，行中每个以空格分隔的部分是list的一个元素
 * 运算符operator
-	* `sub`, `mul`, `div`, `mod`：`<operator> <number> <number>`
+	* `mod`：`<operator> <number> <number>`
 	* `eq`, `gt`, `lt`：`<operator> <number|word> <number|word>`
 	* `and`, `or`：`<operator> <bool> <bool>`
 	* `not`：`not <bool>`

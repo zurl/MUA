@@ -43,5 +43,9 @@ typedef struct SValue {
 void freeValue(Value * value);
 Value * copyValue(const Value * value);
 void printValue(const Value * value);
+Value * getValueFromNumber(long long x);
+Value * getValueFromReal(double x);
+Value * getValueFromStr(const char * x);
+Value * getValueFromNull(void);
 
 #endif

@@ -15,5 +15,6 @@ void initGlobalSymbolTable(void);
 extern SymbolTable * symbolTable;
 extern Value * registerA;
 extern Value * registerB;
+extern int registerFlag;
 
 #endif

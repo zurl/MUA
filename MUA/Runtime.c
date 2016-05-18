@@ -9,6 +9,7 @@
 SymbolTable * symbolTable;
 Value * registerA;
 Value * registerB;
+int registerFlag = 0;
 
 void initGlobalSymbolTable(){
 	symbolTable = (SymbolTable*)malloc(sizeof(SymbolTable));
@@ -33,6 +34,7 @@ Value * eval(ListInstance * listInstance) {
 			||command->data->list->node->data->type!=VList
 			||command->data->list->node->next->data->type != VList))) {
 			//CANT EXCUTE
+			listInstance->now = listInstance->now->next;
 			printf("cant call var");
 			return NULL;
 		}

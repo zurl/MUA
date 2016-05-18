@@ -6,7 +6,7 @@
 #include<string.h> 
 
 void printList(const Value * value) {
-
+	//TODO::
 }
 void printValue(const Value * value) {
 	if (value->type == VNull)printf("[NULL]");
@@ -19,7 +19,7 @@ void printValue(const Value * value) {
 }
 //基本数据类型
 void freeValue(Value * value) {
-
+	//TODO::
 }
 List * copyList(List * list);
 Value * copyValue(const Value * value) {
@@ -53,11 +53,12 @@ ListNode * copyListDfs(ListNode * x) {
 		ListNode * node = (ListNode*)malloc(sizeof(ListNode));
 		node->data = copyValue(x->data);
 		node->next = copyListDfs(x->next);
+		return node;
 	}
 }
 List * copyList(List * list) {
 	List * ret = (List *)malloc(sizeof(List));
-	ret->node = copyListDfs(ret->node);
+	ret->node = copyListDfs(list->node);
 	return ret;
 }
 Value * createValue(const Token * token) {
@@ -94,4 +95,30 @@ Value * createValue(const Token * token) {
 			return ret;
 		}
 	}
+}
+Value * getValueFromNumber(long long x) {
+	Value * ret = (Value *)malloc(sizeof(Value));
+	ret->data = (ValueData *)malloc(sizeof(ValueData));
+	ret->type = VInteger;
+	ret->data->integer = x;
+	return ret;
+}
+Value * getValueFromReal(double x) {
+	Value * ret = (Value *)malloc(sizeof(Value));
+	ret->data = (ValueData *)malloc(sizeof(ValueData));
+	ret->type = VReal;
+	ret->data->real = x;
+	return ret;
+}
+Value * getValueFromStr(const char * x) {
+	Value * ret = (Value *)malloc(sizeof(Value));
+	ret->data = (ValueData *)malloc(sizeof(ValueData));
+	ret->type = VWord;
+	ret->data->word = copyString(x);
+	return ret;
+}
+Value * getValueFromNull() {
+	Value * ret = (Value *)malloc(sizeof(Value));
+	ret->type = VNull;
+	return ret;
 }
