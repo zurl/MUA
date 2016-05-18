@@ -2,11 +2,7 @@
 
 #include "HashMap.h"
 #include<stdio.h>
-
-typedef struct SSymbolTable {
-	HashMap * hashMap;
-	struct SymbolTable * next;
-}SymbolTable;
+#include "Symbol.h"
 
 Value * getSymbol(SymbolTable * symbolTable, const char * key) {
 	Value * ret;
@@ -28,4 +24,8 @@ void setSymbol(SymbolTable * symbolTable, const char *key, const Value * data) {
 
 void deleteSymbol(SymbolTable * symbolTable, const char *key) {
 	//TODO:: system symbol
+}
+
+void freeSymbolTable(SymbolTable * symbolTable) {
+
 }

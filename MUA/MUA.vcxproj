@@ -19,12 +19,13 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="HashMap.cpp" />
+    <ClCompile Include="Function.c" />
+    <ClCompile Include="HashMap.c" />
     <ClCompile Include="Input.c" />
     <ClCompile Include="Main.c" />
-    <ClCompile Include="Runtime.cpp" />
-    <ClCompile Include="Symbol.cpp" />
-    <ClCompile Include="Value.cpp" />
+    <ClCompile Include="Runtime.c" />
+    <ClCompile Include="Symbol.c" />
+    <ClCompile Include="Value.c" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="HashMap.h" />

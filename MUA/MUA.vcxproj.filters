@@ -32,22 +32,25 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="HashMap.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
     <ClCompile Include="Input.c">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="Value.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="Main.c">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="Runtime.cpp">
+    <ClCompile Include="Function.c">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="Symbol.cpp">
+    <ClCompile Include="HashMap.c">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Runtime.c">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Symbol.c">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Value.c">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

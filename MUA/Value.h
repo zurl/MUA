@@ -1,4 +1,6 @@
 #pragma once
+#ifndef VALUE_H  
+#define VALUE_H  
 
 typedef struct SValue Value;
 
@@ -12,8 +14,8 @@ typedef struct SList {
 }List;
 
 typedef enum EValueType {
-	boolean, integer, real, list, word,
-	function, null
+	VBoolean, VInteger, VReal, VList, VWord, VLiteral,
+	VFunction, VNull
 }ValueType;
 
 typedef union UValueData {
@@ -30,4 +32,4 @@ typedef struct SValue {
 
 void freeValue(Value * value);
 Value * copyValue(const Value * value);
-Value * createValue(const Token * token);
+#endif

@@ -47,7 +47,7 @@ int isNum(char x) {
 int isLetter(char x) {
 	return (x >= 'a' && x <= 'z') || (x >= 'A' && x <= 'Z');
 }
-void copyString(char *dest,char *src,int length) {
+void copyChar(char *dest,char *src,int length) {
 	for (int i = 0; i <= length - 1; i++)
 		*(dest + i) = *(src + i);
 	*(dest + length) = 0;
@@ -55,7 +55,8 @@ void copyString(char *dest,char *src,int length) {
 
 TokenList * getTokenListFromBuffer(Buffer * buffer) {
 	TokenList * tokenList = (TokenList *)malloc(sizeof(TokenList));
-	Token * node = NULL;
+	Token * node = (Token * )malloc(sizeof(Token));
+	node->type = TLSB;
 	char * cache = (char *)malloc(sizeof(char) * 256);
 	int now = 0,st;
 	while (buffer->st <= buffer->ed) {
@@ -64,9 +65,9 @@ TokenList * getTokenListFromBuffer(Buffer * buffer) {
 			if (now != 0) {
 				node->data = (char *)malloc(sizeof(char) * (now + 1));
 				if (node->type == TNumber || node->type == TWord)
-					copyString(node->data, buffer->data + st, now);
+					copyChar(node->data, buffer->data + st, now);
 				if (node->type == TLiteral)
-					copyString(node->data, buffer->data + st + 1, now - 1);
+					copyChar(node->data, buffer->data + st + 1, now - 1);
 				now = 0;
 			}
 			buffer->st++;
@@ -109,11 +110,41 @@ TokenList * getTokenListFromBuffer(Buffer * buffer) {
 		buffer->st++;
 	}
 	free(cache);
-	tokenList->st = tokenList->now = node;
+	Token * tmp = (Token *)malloc(sizeof(Token));
+	tmp->type = TRSB;
+	tmp->next = node;
+	tokenList->st = tokenList->now = tmp;
 	return tokenList;
 }
 
-TokenList * getTokenListFromList(List * list) {
-	return NULL;
-}
+//Óï·¨·ÖÎö
 
+List * getListFromTokenList(TokenList * tokenList) {
+	if (tokenList->now->type != TRSB) {
+		//TODO::
+	}
+	tokenList->now = tokenList->now->next;
+	ListNode * listNode = (ListNode *)malloc(sizeof(ListNode));
+	listNode->next = NULL;
+	while (tokenList->now != NULL && tokenList->now->type != TLSB) {
+		if (tokenList->now->type == TRSB) {
+			listNode->data = (Value *)malloc(sizeof(Value));
+			listNode->data->data = (ValueData *)malloc(sizeof(ValueData));
+			listNode->data->type = VList;
+			listNode->data->data->list = getListFromTokenList(tokenList);
+		}
+		else {
+			listNode->data = createValue(tokenList->now);
+		}
+		ListNode * tmp = (ListNode *)malloc(sizeof(ListNode));
+		tmp->next = listNode;
+		listNode = tmp;
+		tokenList->now = tokenList->now->next;
+	}
+	if (tokenList->now == NULL) {
+		//TODO ::
+	}
+	List * list = (List *)malloc(sizeof(List));
+	list->node = listNode->next;
+	return list;
+}

@@ -11,7 +11,8 @@ int main(int argc,char * argv) {
 	else {
 		Buffer * buffer = getBufferFromFile("D:\\DataBase\\MUA\\MUA\\test.mua");
 		TokenList * tokenList = getTokenListFromBuffer(buffer);
-		eval();
+		List * list = getListFromTokenList(tokenList);
+		return 0;
 	}
 	return 0;
 }

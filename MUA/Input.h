@@ -1,4 +1,7 @@
 #pragma once
+#ifndef INPUT_H  
+#define INPUT_H  
+#include "Value.h"
 typedef struct SBuffer {
 	char *data;
 	int st, ed;
@@ -20,8 +23,12 @@ typedef struct STokenList {
 	Token * now;
 }TokenList;
 
+Value * createValue(const Token * token);
 Buffer * getBufferFromConsole(void);
 Buffer * getBufferFromFile(char * fileName);
 TokenList * getTokenListFromBuffer(Buffer * buffer);
+//List * getListFromTokenList(TokenList * tokenList);
 
 char * copyString(const char *src);
+
+#endif
