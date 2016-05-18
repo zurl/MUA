@@ -10,7 +10,7 @@ void printList(const Value * value) {
 }
 void printValue(const Value * value) {
 	if (value->type == VNull)printf("[NULL]");
-	if (value->type == VInteger)printf("%ld",value->data->integer);
+	if (value->type == VInteger)printf("%lld",value->data->integer);
 	if (value->type == VReal)printf("%0.2f", value->data->real);
 	if (value->type == VWord)printf("%s", value->data->word);
 	if (value->type == VLiteral)printf("%s", value->data->word);
@@ -24,15 +24,16 @@ void freeValue(Value * value) {
 List * copyList(List * list);
 Value * copyValue(const Value * value) {
 	Value * ret = (Value *)malloc(sizeof(Value));
+	ret->data = (ValueData *)malloc(sizeof(ValueData));
 	ret->type = value->type;
 	if (value->type == VNull) {
 		
 	}
 	else if (value->type == VBoolean || value->type == VInteger) {
-		ret->data->integer = ret->data->integer;
+		ret->data->integer = value->data->integer;
 	}
 	else if (value->type == VReal) {
-		ret->data->real = ret->data->real;
+		ret->data->real = value->data->real;
 	}
 	else if (value->type == VWord || value->type == VLiteral) {
 		ret->data->word = copyString(value->data->word);
@@ -40,6 +41,10 @@ Value * copyValue(const Value * value) {
 	else if (value->type == VList) {
 		ret->data->list = copyList(value->data->list);
 	}
+	else  if (value->type == VFunction) {
+		ret->data->function = value->data->function;
+	}
+	return ret;
 }
 
 ListNode * copyListDfs(ListNode * x) {

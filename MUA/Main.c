@@ -1,6 +1,7 @@
 #include "Input.h"
 #include "Runtime.h"
 #include "Function.h"
+#include <stdlib.h>
 
 int main(int argc,char * argv) {
 	//决定交互模式

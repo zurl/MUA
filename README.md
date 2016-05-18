@@ -4,6 +4,49 @@
 本项目是翁恺老师的课程“C程序设计专题”的作业，在MIT协议下开源。  
 本项目全部使用C语言完成，开发环境是Visual Studio 2015 community edition.
 > 未来将会提供Makefile文件  
+
+未完成的操作
+============================
+
+* `//`：注释
+* `: <word>`：与thing相同
+* `erase <word>`：清除word所绑定的值
+* `isname <word>`：返回word是否是一个名字
+* `read`：返回一个从标准输入读取的数字或单词
+* `readlinst`：返回一个从标准输入读取的一行，构成一个列表，行中每个以空格分隔的部分是list的一个元素
+* 运算符operator
+	* `sub`, `mul`, `div`, `mod`：`<operator> <number> <number>`
+	* `eq`, `gt`, `lt`：`<operator> <number|word> <number|word>`
+	* `and`, `or`：`<operator> <bool> <bool>`
+	* `not`：`not <bool>`
+* `random <number>`：返回[0,number>的一个随机数
+* `sqrt <number>`：返回number的平方根
+* `isnumber <value>`：返回value是否是数字 
+* `isword <value>`：返回value是否是单词
+* `islist <value>`：返回value是否是列表 
+* `isbool <value>`：返回value是否是布尔量 
+* `isempty <word|list>`: 返回word或list是否是空
+* `test <value>`：测试value是真是假
+* `iftrue <list>`：如果之前最后一次test是真，则执行list
+* `iffalse <list>`：如果之前最后一次test是假，则执行list
+* `word <word> <word|number|bool>`：将两个word合并为一个word，第二个值可以是word、number或bool
+* `list <list1> <list2>`：将list1和list2合并成一个列表，两个列表的元素并列，list1的在list2的前面
+* `join <list> <value>`：将value作为list的最后一个元素加入到list中（如果value是列表，则整个value成为列表的最后一个元素）
+* `first <word|list>`：返回word的第一个字符，或list的第一个元素
+* `last <word|list>`：返回word的最后一个字符，list的最后一个元素
+* `butfirst <word|list>`：返回除第一个元素外剩下的列表，或除第一个字符外剩下的单词
+* `butlast <word|list>`：返回除最后一个元素外剩下的列表，或除最后一个字符外剩下的单词
+* `item <number> <word|list>`：返回word或列表中的第number项字符或元素
+* `repeat <number> <list>`：运行list中的代码number次
+* `stop`：停止当前代码的执行。当前代码可能是run、repeat、if或函数中的代码
+* `wait <number>`：等待number个ms
+* `save <word>`：保存当前命名空间在word文件中
+* `load <word>`：从word文件中装载内容，加入当前命名空间
+* `erall`：清除当前命名空间的全部内容
+* `poall`：列出当前命名空间的全部名字
+* `output <value>`：设定value为返回给调用者的值，但是不停止执行
+* `stop`：停止执行
+* `local <word>`：设定该word为本地名字。参数也是本地名字
  
 下面是原题目
 ============================

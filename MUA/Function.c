@@ -1,10 +1,9 @@
 #include "Value.h"
 #include "Runtime.h"
 #include "Symbol.h"
+#include "Function.h"
+#include <stdio.h>
 #include <stdlib.h>
-
-typedef long long(*IntHandeler)(long long, long long);
-typedef double(*RealHandeler)(double, double);
 
 Value * getValueFromNumber(long long x) {
 	Value * ret = (Value *)malloc(sizeof(Value));
@@ -41,43 +40,43 @@ typedef struct SSysFunc {
 
 
 
-Value * abstractCalculate(IntHandeler i,RealHandeler r) {// $x,$y
-	if (registerA->type == VInteger && registerB->type == VInteger) {
-		return getValueFromNumber(i(registerA->data->integer, registerB->data->integer));
-	}
-	else if (registerA->type == VInteger && registerB->type == VReal) {
-		return getValueFromReal(r(registerA->data->integer, registerB->data->real));
-	}
-	else if (registerA->type == VReal && registerB->type == VInteger) {
-		return getValueFromReal(r(registerA->data->real, registerB->data->integer));
-	}
-	else if (registerA->type == VReal && registerB->type == VReal) {
-		return getValueFromReal(r(registerA->data->real, registerB->data->real));
-	}
-	else {
-		//TODO:err;
-	}
-}
-inline long long SFaddI(long long a, long long b) {
-	return a + b;
-}
-inline double SFaddD(double a, double b) {
-	return a + b;
-}
-inline Value * SFadd() {
-	return abstractCalculate(SFaddI, SFaddD);
-}
-
-inline Value * SFprint() {
+inline Value * SFprint(void) {
 	printValue(registerA);
 	return getValueFromNull();
+}
+inline Value * SFmake(void) {
+	if (registerA->type != VLiteral) {
+		//ERROR
+		printf("Syntax Error: `make` command only can be used on literial.");
+		return getValueFromNull();
+	}
+	setSymbol(symbolTable, registerA->data->word, registerB);
+	return getValueFromNull();
+}
+inline Value * SFthing(void) {
+	if (registerA->type != VLiteral) {
+		//ERROR
+		printf("Syntax Error: `thing` command only can be used on literial.\n");
+		return getValueFromNull();
+	}
+	Value * ret = getSymbol(symbolTable, registerA->data->word);
+	if (ret == NULL) {
+		printf("Runtime Error: undefined symbol `%s`.\n", registerA->data->word);
+		return getValueFromNull();
+	}
+	return ret;
 }
 
 
 void initSystemFunction() {
 	SysFunc sysFunc[] = { 
 		{ "add",SFadd,2 },
-		{ "print",SFprint,1 }
+		{ "sub",SFsub,2 },
+		{ "mul",SFmul,2 },
+		{ "div",SFdiv,2 },
+		{ "print",SFprint,1 },
+		{ "make",SFmake,2 },
+		{ "thing",SFthing,1 }
 	};
 	int length = (sizeof(sysFunc) / sizeof(SysFunc));
 	for (int i = 0; i <= length - 1; i++) {

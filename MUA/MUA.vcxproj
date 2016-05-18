@@ -19,6 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Arithmetic.c" />
     <ClCompile Include="Function.c" />
     <ClCompile Include="HashMap.c" />
     <ClCompile Include="Input.c" />
