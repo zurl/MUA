@@ -185,7 +185,7 @@ Value * SFlist() {
 	return ret;
 }
 Value * SFjoin() {
-	if (registerB->type != VList) {
+	if (registerA->type != VList) {
 		printf("Syntax Error: Command `join` can only recieve `list` value as the first arguments.\n");
 		return getValueFromNull();
 	}
@@ -207,12 +207,30 @@ Value * SFjoin() {
 	return ret;
 }
 
-Value * SFfirst() {
-	if (registerA->type = VLiteral) {
-		
+
+char * substring(const char * src, int st, int ed) {
+	char * ret = (char *)malloc(sizeof(char) * (ed - st + 2));
+	for (int i = st; i <= ed; i++)
+		ret[i - st] = src[i];
+	ret[ed - st + 1] = 0;
+	return ret;
+}
+Value * getValueFromSunString(const char * str, int st, int ed) {
+	if (*str == 0) {
+		printf("Runtime Error: Command `first` cannot be applied for NULL word.\n");
+		return getValueFromNull();
 	}
+	str = substring(str, st, ed);
+	Value * ret = getValueFromStr(str);
+	free(str);
+	return ret;
+}
+
+Value * SFfirst() {
+	if (registerA->type == VLiteral)
+		return getValueFromSunString(registerA->data->word, 0, 0);
 	if (registerA->type != VList) {
-		printf("Syntax Error: Command `first` can only recieve `list` value as arguments.\n");
+		printf("Syntax Error: Command `first` can only recieve `list` or `word` value as arguments.\n");
 		return getValueFromNull();
 	}
 	if (registerA->data->list->node == NULL) {
@@ -222,6 +240,10 @@ Value * SFfirst() {
 	return copyValue(registerA->data->list->node->data);
 }
 Value * SFlast() {
+	if (registerA->type == VLiteral) {
+		int len = strlen(registerA->data->word);
+		return getValueFromSunString(registerA->data->word,len-1, len-1);
+	}
 	if (registerA->type != VList) {
 		printf("Syntax Error: Command `last` can only recieve `list` value as arguments.\n");
 		return getValueFromNull();
@@ -235,6 +257,10 @@ Value * SFlast() {
 	return copyValue(node->data);
 }
 Value * SFbutfirst() {
+	if (registerA->type == VLiteral) {
+		int len = strlen(registerA->data->word);
+		return getValueFromSunString(registerA->data->word, 1, len - 1);
+	}
 	if (registerA->type != VList) {
 		printf("Syntax Error: Command `butfirst` can only recieve `list` value as arguments.\n");
 		return getValueFromNull();
@@ -250,6 +276,10 @@ Value * SFbutfirst() {
 	return ret;
 }
 Value * SFbutlast() {
+	if (registerA->type == VLiteral) {
+		int len = strlen(registerA->data->word);
+		return getValueFromSunString(registerA->data->word, 0, len - 2);
+	}
 	if (registerA->type != VList) {
 		printf("Syntax Error: Command `butlast` can only recieve `list` value as arguments.\n");
 		return getValueFromNull();

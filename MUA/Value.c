@@ -21,7 +21,7 @@ void printList(const List * value) {
 	printf(" [ ");
 	ListNode * node = value->node;
 	while (node != NULL) {
-		printValue(node->data);
+		printValue(node->data); putchar(' ');
 		node = node->next;
 	}
 	printf(" ] ");
@@ -54,7 +54,7 @@ Value * copyValue(const Value * value) {
 	ret->data = (ValueData *)malloc(sizeof(ValueData));
 	ret->type = value->type;
 	if (value->type == VNull) {
-		
+		ret->data = NULL;
 	}
 	else if (value->type == VBoolean || value->type == VInteger) {
 		ret->data->integer = value->data->integer;
@@ -147,5 +147,6 @@ Value * getValueFromStr(const char * x) {
 Value * getValueFromNull() {
 	Value * ret = (Value *)malloc(sizeof(Value));
 	ret->type = VNull;
+	ret->data = NULL;
 	return ret;
 }

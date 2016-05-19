@@ -60,12 +60,15 @@ Value * SFstop() {
 	ret->type = VFuncStop;
 	return ret;
 }
-
-
+Value * SFendl() {
+	printf("\n");
+	return getValueFromNull();
+}	
 
 
 void initSystemFunction() {
 	SysFunc sysFunc[] = { 
+		{ "endl",SFendl, 0},
 		{ "add",SFadd,2 },
 		{ "sub",SFsub,2 },
 		{ "mul",SFmul,2 },
@@ -84,7 +87,14 @@ void initSystemFunction() {
 		{ "output",SFoutput,1 },
 		{ "test",SFtest,1 },
 		{ "iftrue",SFiftrue,1 },
-		{ "iffalse",SFiffalse,1 }
+		{ "iffalse",SFiffalse,1 },
+		{ "first", SFfirst, 1},
+		{ "last", SFlast, 1 },
+		{ "butfirst", SFbutfirst, 1 },
+		{ "butlast",SFbutlast,1 },
+		{ "word",SFword,2 },
+		{ "list",SFlist,2 },
+		{ "join",SFjoin,2 }
 	};
 	int length = (sizeof(sysFunc) / sizeof(SysFunc));
 	for (int i = 0; i <= length - 1; i++) {

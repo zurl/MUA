@@ -4,7 +4,7 @@
 #include "Value.h"
 void initSystemFunction(void);
 
-
+/*Arithmetic.c*/
 Value * SFtest(void);
 Value * SFiftrue(void);
 Value * SFiffalse(void);
@@ -19,4 +19,12 @@ Value * SFisword(void);
 Value * SFisnumber(void);
 Value * SFisbool(void);
 Value * SFisempty(void);
+Value * SFfirst(void);
+Value * SFlast(void);
+Value * SFbutfirst(void);
+Value * SFbutlast(void);
+Value * SFword(void);
+Value * SFlist(void);
+Value * SFjoin(void);
+
 #endif
