@@ -33,7 +33,7 @@ Value * call(ListInstance * listInstance) {
 	}
 	Value * ret = getSymbol(symbolTable, "$");
 	if(ret == NULL)return getValueFromNull();
-	else return ret;
+	else return ret;	
 }
 Value * eval(ListInstance * listInstance) {
 	if (listInstance->now == NULL) {
@@ -48,8 +48,9 @@ Value * eval(ListInstance * listInstance) {
 			||command->data->list->node->next->data->type != VList))) {
 			//CANT EXCUTE
 			listInstance->now = listInstance->now->next;
-			printf("cant call var");
-			return NULL;
+			if(command == NULL) printf("Runtime Error : `%s` is undefined .\n", listInstance->now->data->data->word);
+			else printf("Runtime Error : `%s` is not a callable value.\n", listInstance->now->data->data->word);
+			return getValueFromNull();
 		}
 		//create new symbol table
 		

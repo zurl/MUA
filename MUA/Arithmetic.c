@@ -2,6 +2,7 @@
 #include "Runtime.h"
 #include <stdio.h>
 #include <string.h>
+#include <stdlib.h>
 
 typedef long long(*IntHandeler)(long long, long long);
 typedef double(*RealHandeler)(double, double);
@@ -20,7 +21,8 @@ Value * abstractCalculate(IntHandeler i, RealHandeler r) {// $x,$y
 		return getValueFromReal(r(registerA->data->real, registerB->data->real));
 	}
 	else {
-		//TODO:err;
+		printf("Syntax Error: Operand type is invaild.\n");
+		return getValueFromNull();
 	}
 }
 /* ADD */
@@ -104,7 +106,172 @@ Value * SFisempty(void) {
 		else return SFtrue();
 	}
 	else {
-		printf("Syntax Error: `isempty` can only be applyed on `word` or `list`.\n");
+		printf("Syntax Error: Command `isempty` can only be applyed on `word` or `list`.\n");
 		return getValueFromNull();
+	}
+}
+Value * SFtest() {
+	if (registerA->type != VBoolean) {
+		printf("Syntax Error: Command `test` can only be applied on `bool` value.\n");
+		return getValueFromNull();
+	}
+	registerTestFlag = registerA->data->integer;
+	return getValueFromNull();
+}
+Value * SFiftrue() {
+	if (registerA->type != VList) {
+		printf("Syntax Error: Command `iftrue` can only be applied on `list` value.\n");
+		return getValueFromNull();
+	}
+	if (registerTestFlag == 1) {
+		ListInstance * newInstance = (ListInstance *)malloc(sizeof(ListInstance));
+		newInstance->now = registerA->data->list->node;
+		eval(newInstance);
+		free(newInstance);
+	}
+	return getValueFromNull();
+}
+Value * SFiffalse() {
+	if (registerA->type != VList) {
+		printf("Syntax Error: Command `iffalse` can only be applied on `list` value.\n");
+		return getValueFromNull();
+	}
+	if (registerTestFlag == 0) {
+		ListInstance * newInstance = (ListInstance *)malloc(sizeof(ListInstance));
+		newInstance->now = registerA->data->list->node;
+		eval(newInstance);
+		free(newInstance);
+	}
+	return getValueFromNull();
+}
+Value * SFword() {
+	if (registerA->type != VLiteral) {
+		printf("Syntax Error: Command `word` can only recieve `word` value as first argument .\n");
+		return getValueFromNull();
+	}
+	if (registerB->type != VLiteral && registerB->type != VInteger && registerB->type != VReal && registerB->type != VBoolean) {
+		printf("Syntax Error: Command `word` can only recieve `word` or `number` or `bool` value as second argument .\n");
+		return getValueFromNull();
+	}
+	char * buffer = (char *)malloc(sizeof(char) * EXCHANGE_BUFFER_SIZE);
+	if (registerB->type == VLiteral)sprintf(buffer, "%s%s", registerA->data->word, registerB->data->word);
+	if (registerB->type == VInteger)sprintf(buffer, "%s%lld", registerA->data->word, registerB->data->integer);
+	if (registerB->type == VReal)sprintf(buffer, "%s%lf", registerA->data->word, registerB->data->real);
+	if (registerB->type == VBoolean)sprintf(buffer, "%s%s", registerA->data->word, registerB->data->integer==1?"true":"false");
+	Value * ret = (Value *)malloc(sizeof(Value));
+	ret->data = (ValueData*)malloc(sizeof(ValueData));
+	ret->type = VLiteral;
+	ret->data->word = buffer;
+	return ret;	
+}
+Value * SFlist() {
+	if (registerB->type != VList &&registerA->type != VList) {
+		printf("Syntax Error: Command `list` can only recieve `list` value as arguments.\n");
+		return getValueFromNull();
+	}
+	List * tmp1 = registerA->data->list;
+	List * tmp2 = registerB->data->list;
+	ListNode * node = tmp1->node;
+	if (node == NULL) {
+		tmp1->node = tmp2->node;
+	}
+	else {
+		while (node->next != NULL) node = node->next;
+		node->next = tmp2->node;
+	}
+	Value * ret = copyValue(registerA);
+	if (tmp1->node == tmp2->node)tmp1->node == NULL;
+	else node->next = NULL;
+	return ret;
+}
+Value * SFjoin() {
+	if (registerB->type != VList) {
+		printf("Syntax Error: Command `join` can only recieve `list` value as the first arguments.\n");
+		return getValueFromNull();
+	}
+	List * tmp1 = registerA->data->list;
+	ListNode * node = tmp1->node;
+	ListNode * newnode = (ListNode *)malloc(sizeof(ListNode));
+	newnode->data = copyValue(registerB);
+	newnode->next = NULL;
+	if (node == NULL) {
+		tmp1->node = newnode;
+	}
+	else {
+		while (node->next != NULL) node = node->next;
+		node->next = newnode;
+	}
+	Value * ret = copyValue(registerA);
+	if (tmp1->node == newnode)tmp1->node == NULL;
+	else node->next = NULL;
+	return ret;
+}
+
+Value * SFfirst() {
+	if (registerA->type = VLiteral) {
+		
+	}
+	if (registerA->type != VList) {
+		printf("Syntax Error: Command `first` can only recieve `list` value as arguments.\n");
+		return getValueFromNull();
+	}
+	if (registerA->data->list->node == NULL) {
+		printf("Runtime Error: Command `first` cannot be applied for NULL list.\n");
+		return getValueFromNull();
+	}
+	return copyValue(registerA->data->list->node->data);
+}
+Value * SFlast() {
+	if (registerA->type != VList) {
+		printf("Syntax Error: Command `last` can only recieve `list` value as arguments.\n");
+		return getValueFromNull();
+	}
+	if (registerA->data->list->node == NULL) {
+		printf("Runtime Error: Command `last` cannot be applied for NULL list.\n");
+		return getValueFromNull();
+	}
+	ListNode * node = registerA->data->list->node;
+	while (node->next != NULL)node = node->next;
+	return copyValue(node->data);
+}
+Value * SFbutfirst() {
+	if (registerA->type != VList) {
+		printf("Syntax Error: Command `butfirst` can only recieve `list` value as arguments.\n");
+		return getValueFromNull();
+	}
+	if (registerA->data->list->node == NULL) {
+		printf("Runtime Error: Command `butfirst` cannot be applied for NULL list.\n");
+		return getValueFromNull();
+	}
+	ListNode * node = registerA->data->list->node;
+	registerA->data->list->node = registerA->data->list->node->next;
+	Value * ret = copyValue(registerA);
+	registerA->data->list->node = node;
+	return ret;
+}
+Value * SFbutlast() {
+	if (registerA->type != VList) {
+		printf("Syntax Error: Command `butlast` can only recieve `list` value as arguments.\n");
+		return getValueFromNull();
+	}
+	if (registerA->data->list->node == NULL) {
+		printf("Runtime Error: Command `first` cannot be applied for NULL list.\n");
+		return getValueFromNull();
+	}
+	if (registerA->data->list->node->next == NULL) {
+		ListNode * tmp = registerA->data->list->node;
+		registerA->data->list->node = NULL;
+		Value * ret = copyValue(registerA);
+		registerA->data->list->node = tmp;
+		return ret;
+	}
+	else {
+		ListNode * node = registerA->data->list->node;
+		while (node->next->next != NULL)node = node->next;
+		ListNode * tmp = node->next;
+		node->next = NULL;
+		Value * ret = copyValue(registerA);
+		node->next = tmp;
+		return ret;
 	}
 }

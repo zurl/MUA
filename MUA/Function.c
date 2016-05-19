@@ -60,6 +60,10 @@ Value * SFstop() {
 	ret->type = VFuncStop;
 	return ret;
 }
+
+
+
+
 void initSystemFunction() {
 	SysFunc sysFunc[] = { 
 		{ "add",SFadd,2 },
@@ -77,7 +81,10 @@ void initSystemFunction() {
 		{ "isbool",SFisbool,1 },
 		{ "isempty",SFisempty,1},
 		{ "stop",SFstop,0 },
-		{ "output",SFoutput,1 }
+		{ "output",SFoutput,1 },
+		{ "test",SFtest,1 },
+		{ "iftrue",SFiftrue,1 },
+		{ "iffalse",SFiffalse,1 }
 	};
 	int length = (sizeof(sysFunc) / sizeof(SysFunc));
 	for (int i = 0; i <= length - 1; i++) {
@@ -90,3 +97,4 @@ void initSystemFunction() {
 		setSymbol(symbolTable, sysFunc[i].name, func);
 	}
 }
+

@@ -5,7 +5,9 @@
 void initSystemFunction(void);
 
 
-
+Value * SFtest(void);
+Value * SFiftrue(void);
+Value * SFiffalse(void);
 Value * SFtrue(void);
 Value * SFfalse(void);
 Value * SFadd(void);

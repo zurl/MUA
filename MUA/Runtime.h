@@ -18,4 +18,6 @@ extern Value * registerA;
 extern Value * registerB;
 extern int registerTestFlag;
 
+#define EXCHANGE_BUFFER_SIZE 256
+
 #endif

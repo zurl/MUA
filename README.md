@@ -21,9 +21,7 @@
 	* `not`：`not <bool>`
 * `random <number>`：返回[0,number>的一个随机数
 * `sqrt <number>`：返回number的平方根
-* `test <value>`：测试value是真是假
-* `iftrue <list>`：如果之前最后一次test是真，则执行list
-* `iffalse <list>`：如果之前最后一次test是假，则执行list
+
 * `word <word> <word|number|bool>`：将两个word合并为一个word，第二个值可以是word、number或bool
 * `list <list1> <list2>`：将list1和list2合并成一个列表，两个列表的元素并列，list1的在list2的前面
 * `join <list> <value>`：将value作为list的最后一个元素加入到list中（如果value是列表，则整个value成为列表的最后一个元素）
@@ -32,6 +30,7 @@
 * `butfirst <word|list>`：返回除第一个元素外剩下的列表，或除第一个字符外剩下的单词
 * `butlast <word|list>`：返回除最后一个元素外剩下的列表，或除最后一个字符外剩下的单词
 * `item <number> <word|list>`：返回word或列表中的第number项字符或元素
+
 * `repeat <number> <list>`：运行list中的代码number次
 * `stop`：停止当前代码的执行。当前代码可能是run、repeat、if或函数中的代码
 * `wait <number>`：等待number个ms

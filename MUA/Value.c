@@ -5,8 +5,26 @@
 #include<stdlib.h>
 #include<string.h> 
 
-void printList(const Value * value) {
-	//TODO::
+void dfsFreeList(ListNode *x) {
+	if (x != NULL) {
+		dfsFreeList(x->next);
+		freeValue(x->data);
+		free(x);
+	}
+}
+void freeList(List * value) {
+	dfsFreeList(value->node);
+	free(value);
+}
+
+void printList(const List * value) {
+	printf(" [ ");
+	ListNode * node = value->node;
+	while (node != NULL) {
+		printValue(node->data);
+		node = node->next;
+	}
+	printf(" ] ");
 }
 void printValue(const Value * value) {
 	if (value->type == VNull)printf("[NULL]");
@@ -15,11 +33,20 @@ void printValue(const Value * value) {
 	if (value->type == VWord)printf("%s", value->data->word);
 	if (value->type == VLiteral)printf("%s", value->data->word);
 	if (value->type == VBoolean)if (value->data->integer == 1)printf("true");else printf("false");
-	if (value->type == VList)printList(value);
+	if (value->type == VList)printList(value->data->list);
 }
 //基本数据类型
 void freeValue(Value * value) {
-	//TODO::
+	//if (value->type == VNull)
+	//if (value->type == VInteger)printf("%lld", value->data->integer);
+	//if (value->type == VReal)printf("%0.2f", value->data->real);
+	if (value->type == VWord ||value->type == VLiteral)free(value->data->word);
+	//if (value->type == VBoolean)if (value->data->integer == 1)printf("true"); else printf("false");
+	if (value->type == VList) {
+		freeList(value->data->list);
+	}
+	if (value->data != NULL)free(value->data);
+	free(value);
 }
 List * copyList(List * list);
 Value * copyValue(const Value * value) {

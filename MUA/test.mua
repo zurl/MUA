@@ -1,2 +1,1 @@
-make 'func [ [ ] [ print add 1 2 output 10 stop print add 1 2 ] ]
-print func
+print word 'helo 'helo
