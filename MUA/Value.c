@@ -14,7 +14,7 @@ void printValue(const Value * value) {
 	if (value->type == VReal)printf("%0.2f", value->data->real);
 	if (value->type == VWord)printf("%s", value->data->word);
 	if (value->type == VLiteral)printf("%s", value->data->word);
-	if (value->type == VBoolean)if (value->data->integer == 0)printf("true");else printf("false");
+	if (value->type == VBoolean)if (value->data->integer == 1)printf("true");else printf("false");
 	if (value->type == VList)printList(value);
 }
 //基本数据类型

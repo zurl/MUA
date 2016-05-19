@@ -17,8 +17,9 @@ int main(int argc,char * argv) {
 		List * list = getListFromTokenList(tokenList);
 		ListInstance * newInstance = (ListInstance *)malloc(sizeof(ListInstance));
 		newInstance->now = list->node;
-		initGlobalSymbolTable();
+		initSystemSymbolTable();
 		initSystemFunction();
+		initGlobalSymbolTable();
 		call(newInstance);
 
 		return 0;

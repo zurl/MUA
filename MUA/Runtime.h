@@ -12,9 +12,10 @@ ListNode * now;
 Value * eval(ListInstance * listInstance);
 Value * call(ListInstance * listInstance);
 void initGlobalSymbolTable(void);
+void initSystemSymbolTable(void);
 extern SymbolTable * symbolTable;
 extern Value * registerA;
 extern Value * registerB;
-extern int registerFlag;
+extern int registerTestFlag;
 
 #endif

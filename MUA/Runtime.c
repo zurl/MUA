@@ -9,18 +9,31 @@
 SymbolTable * symbolTable;
 Value * registerA;
 Value * registerB;
-int registerFlag = 0;
+int registerTestFlag = 0;
 
-void initGlobalSymbolTable(){
+void initSystemSymbolTable(){
 	symbolTable = (SymbolTable*)malloc(sizeof(SymbolTable));
 	symbolTable->hashMap = createHashMap();
 	symbolTable->next = NULL;
 }
-
-
+void initGlobalSymbolTable() {
+	SymbolTable * tmp = symbolTable;
+	symbolTable = (SymbolTable*)malloc(sizeof(SymbolTable));
+	symbolTable->hashMap = createHashMap();
+	symbolTable->next = tmp;
+}
 Value * call(ListInstance * listInstance) {
-	while (listInstance->now != NULL)
-		eval(listInstance);
+	while (listInstance->now != NULL) {
+		Value * tmp = eval(listInstance);
+		if (tmp->type == VFuncStop) {
+			freeValue(tmp);
+			break;
+		}
+		freeValue(tmp);
+	}
+	Value * ret = getSymbol(symbolTable, "$");
+	if(ret == NULL)return getValueFromNull();
+	else return ret;
 }
 Value * eval(ListInstance * listInstance) {
 	if (listInstance->now == NULL) {
@@ -63,6 +76,8 @@ Value * eval(ListInstance * listInstance) {
 			tmp = symbolTable;
 			symbolTable = symbolTable->next;
 			freeSymbolTable(tmp);
+			//DestorySymbolTable
+			return ret;
 		}
 		else {
 			Function * func = command->data->function;
@@ -79,8 +94,7 @@ Value * eval(ListInstance * listInstance) {
 			}
 			return func->data();
 		}
-		//DestorySymbolTable
-		return ret;
+		
 	}
 	else {
 		ListNode * tmp = listInstance->now;

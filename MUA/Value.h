@@ -22,7 +22,7 @@ typedef struct SList {
 
 typedef enum EValueType {
 	VBoolean, VInteger, VReal, VList, VWord, VLiteral,
-	VFunction, VNull
+	VFunction, VNull , VFuncStop
 }ValueType;
 
 typedef union UValueData {

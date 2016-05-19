@@ -15,6 +15,7 @@ typedef struct SSysFunc {
 
 
 
+
 inline Value * SFprint(void) {
 	printValue(registerA);
 	return getValueFromNull();
@@ -41,8 +42,24 @@ inline Value * SFthing(void) {
 	}
 	return ret;
 }
-
-
+int isInFunction() {
+	if (symbolTable->next->next == NULL)return 0;
+	return 1;
+}
+Value * SFoutput() {
+	if (!isInFunction()) {
+		printf("Runtime Error: `output` only can be used in function.\n");		
+	}
+	else {
+		setSymbol(symbolTable,"$" , registerA);
+	}
+	return getValueFromNull();
+}
+Value * SFstop() {
+	Value * ret = (Value *)malloc(sizeof(Value));
+	ret->type = VFuncStop;
+	return ret;
+}
 void initSystemFunction() {
 	SysFunc sysFunc[] = { 
 		{ "add",SFadd,2 },
@@ -51,7 +68,16 @@ void initSystemFunction() {
 		{ "div",SFdiv,2 },
 		{ "print",SFprint,1 },
 		{ "make",SFmake,2 },
-		{ "thing",SFthing,1 }
+		{ "thing",SFthing,1 },
+		{ "true",SFtrue,0 },
+		{ "false",SFfalse,0 },
+		{ "islist",SFislist,1 },
+		{ "isword",SFisword,1 },
+		{ "isnumber",SFisnumber,1 },
+		{ "isbool",SFisbool,1 },
+		{ "isempty",SFisempty,1},
+		{ "stop",SFstop,0 },
+		{ "output",SFoutput,1 }
 	};
 	int length = (sizeof(sysFunc) / sizeof(SysFunc));
 	for (int i = 0; i <= length - 1; i++) {

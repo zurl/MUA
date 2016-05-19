@@ -21,11 +21,6 @@
 	* `not`：`not <bool>`
 * `random <number>`：返回[0,number>的一个随机数
 * `sqrt <number>`：返回number的平方根
-* `isnumber <value>`：返回value是否是数字 
-* `isword <value>`：返回value是否是单词
-* `islist <value>`：返回value是否是列表 
-* `isbool <value>`：返回value是否是布尔量 
-* `isempty <word|list>`: 返回word或list是否是空
 * `test <value>`：测试value是真是假
 * `iftrue <list>`：如果之前最后一次test是真，则执行list
 * `iffalse <list>`：如果之前最后一次test是假，则执行list
@@ -44,8 +39,6 @@
 * `load <word>`：从word文件中装载内容，加入当前命名空间
 * `erall`：清除当前命名空间的全部内容
 * `poall`：列出当前命名空间的全部名字
-* `output <value>`：设定value为返回给调用者的值，但是不停止执行
-* `stop`：停止执行
 * `local <word>`：设定该word为本地名字。参数也是本地名字
  
 下面是原题目
