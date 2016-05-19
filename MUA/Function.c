@@ -64,7 +64,54 @@ Value * SFendl() {
 	printf("\n");
 	return getValueFromNull();
 }	
+Value * SFerase() {
+	if (registerA->type != VLiteral) {
+		printf("Syntax Error: `erase` only can recieve `word` as argument.\n");
+		return getValueFromNull();
+	}
+	Value * tmp = getElement(symbolTable->hashMap, registerA->data->word);
+	if (tmp == NULL) {
+		printf("Runtime Error: undefined word.\n");
+		return getValueFromNull();
+	}
+	deleteSymbol(symbolTable, registerA->data->word);
+	return getValueFromNull();	
+}
+Value * SFisname(void) {
+	if (registerA->type != VLiteral) {
+		printf("Syntax Error: `isname` only can recieve `word` as argument.\n");
+		return getValueFromNull();
+	}
+	Value * value = getSymbol(symbolTable, registerA->data->word);
+	if(value != NULL)return SFtrue();
+	else return SFfalse();
+}
 
+Value * SFrepeat() {
+	if (registerA->type != VInteger || registerA->data->integer<0) {
+		printf("Syntax Error: `repeat` only can recieve positive integer as first argument.\n");
+		return getValueFromNull();
+	}
+	if (registerB->type != VList) {
+		printf("Syntax Error: `repeat` only can recieve list as second argument.\n");
+		return getValueFromNull();
+	}
+	int times = registerA->data->integer;
+	for (int i = 1; i <= times; i++) {
+		ListInstance * listInstance = (ListInstance *)malloc(sizeof(ListInstance));
+		listInstance->now = registerB->data->list->node;
+		while (listInstance->now != NULL) {
+			Value * tmp = eval(listInstance);
+			if (tmp->type == VFuncStop) {
+				freeValue(tmp);
+				i = times;
+				break;
+			}
+			freeValue(tmp);
+		}
+	}
+	return getValueFromNull();
+}
 
 void initSystemFunction() {
 	SysFunc sysFunc[] = { 
@@ -94,7 +141,10 @@ void initSystemFunction() {
 		{ "butlast",SFbutlast,1 },
 		{ "word",SFword,2 },
 		{ "list",SFlist,2 },
-		{ "join",SFjoin,2 }
+		{ "join",SFjoin,2 },
+		{ "isname",SFisname,1},
+		{ "repeat",SFrepeat,2},
+		{ "erase",SFerase,1}
 	};
 	int length = (sizeof(sysFunc) / sizeof(SysFunc));
 	for (int i = 0; i <= length - 1; i++) {

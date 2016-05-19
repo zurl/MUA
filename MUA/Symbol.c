@@ -23,7 +23,7 @@ void setSymbol(SymbolTable * symbolTable, const char *key, const Value * data) {
 }
 
 void deleteSymbol(SymbolTable * symbolTable, const char *key) {
-	//TODO:: system symbol
+	removeElement(symbolTable->hashMap, key);
 }
 
 void freeSymbolTable(SymbolTable * symbolTable) {

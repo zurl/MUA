@@ -1,6 +1,7 @@
 #include "Function.h"
 #include "Runtime.h"
 #include <stdio.h>
+#include <math.h>
 #include <string.h>
 #include <stdlib.h>
 
@@ -66,6 +67,47 @@ inline double SFdivD(double a, double b) {
 Value * SFdiv() {
 	return abstractCalculate(SFdivI, SFdivD);
 }
+Value *SFnot(void) {
+	if (registerA->type != VBoolean) {
+		printf("Syntax Error: Command `not` can only be applied on `bool` value.\n");
+		return getValueFromNull();
+	}
+	if (registerA->data->integer)return SFfalse();
+	return SFtrue();
+}
+Value *SFand(void) {
+	if (registerA->type != VBoolean) {
+		printf("Syntax Error: Command `and` can only be applied on `bool` value.\n");
+		return getValueFromNull();
+	}
+	if (registerA->data->integer && registerA->data->integer)return SFture();
+	return SFfalse();
+}
+Value *SFor(void) {
+	if (registerA->type != VBoolean) {
+		printf("Syntax Error: Command `or` can only be applied on `bool` value.\n");
+		return getValueFromNull();
+	}
+	if (registerA->data->integer || registerA->data->integer)return SFture();
+	return SFfalse();
+}
+
+Value *SFrandom(void) {
+	if (registerA->type != VInteger) {
+		printf("Syntax Error: Command `random` can only be applied on `number` value.\n");
+		return getValueFromNull();
+	}
+	return getValueFromNumber(rand() % registerA->data->integer);
+}
+Value *SFsqrt(void) {
+	if (registerA->type != VInteger && registerA->type != VReal) {
+		printf("Syntax Error: Command `random` can only be applied on `number` value.\n");
+		return getValueFromNull();
+	}
+	if (registerA->type == VInteger)return getValueFromReal(sqrt(registerA->data->integer));
+	else return getValueFromReal(sqrt(registerA->data->real));
+}
+
 Value * SFtrue(void) {
 	Value * ret = (Value *)malloc(sizeof(Value));
 	ret->data = (ValueData *)malloc(sizeof(ValueData));
@@ -215,7 +257,7 @@ char * substring(const char * src, int st, int ed) {
 	ret[ed - st + 1] = 0;
 	return ret;
 }
-Value * getValueFromSunString(const char * str, int st, int ed) {
+Value * getValueFromSubString(const char * str, int st, int ed) {
 	if (*str == 0) {
 		printf("Runtime Error: Command `first` cannot be applied for NULL word.\n");
 		return getValueFromNull();
@@ -228,7 +270,7 @@ Value * getValueFromSunString(const char * str, int st, int ed) {
 
 Value * SFfirst() {
 	if (registerA->type == VLiteral)
-		return getValueFromSunString(registerA->data->word, 0, 0);
+		return getValueFromSubString(registerA->data->word, 0, 0);
 	if (registerA->type != VList) {
 		printf("Syntax Error: Command `first` can only recieve `list` or `word` value as arguments.\n");
 		return getValueFromNull();
@@ -242,7 +284,7 @@ Value * SFfirst() {
 Value * SFlast() {
 	if (registerA->type == VLiteral) {
 		int len = strlen(registerA->data->word);
-		return getValueFromSunString(registerA->data->word,len-1, len-1);
+		return getValueFromSubString(registerA->data->word,len-1, len-1);
 	}
 	if (registerA->type != VList) {
 		printf("Syntax Error: Command `last` can only recieve `list` value as arguments.\n");
@@ -259,7 +301,7 @@ Value * SFlast() {
 Value * SFbutfirst() {
 	if (registerA->type == VLiteral) {
 		int len = strlen(registerA->data->word);
-		return getValueFromSunString(registerA->data->word, 1, len - 1);
+		return getValueFromSubString(registerA->data->word, 1, len - 1);
 	}
 	if (registerA->type != VList) {
 		printf("Syntax Error: Command `butfirst` can only recieve `list` value as arguments.\n");
@@ -278,7 +320,7 @@ Value * SFbutfirst() {
 Value * SFbutlast() {
 	if (registerA->type == VLiteral) {
 		int len = strlen(registerA->data->word);
-		return getValueFromSunString(registerA->data->word, 0, len - 2);
+		return getValueFromSubString(registerA->data->word, 0, len - 2);
 	}
 	if (registerA->type != VList) {
 		printf("Syntax Error: Command `butlast` can only recieve `list` value as arguments.\n");

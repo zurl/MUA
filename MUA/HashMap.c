@@ -3,6 +3,7 @@
 #include<string.h>
 #include "Value.h"
 #include "HashMap.h"
+#include "Input.h"
 const int pirmeArray[] = {17,37,79,163,331,673,1361,2729,5471,10949,21911,43853,87719,175447,350899,701819,1403641,2807303,5614657,11229331,22458671, 44917381,89834777,179669557,359339171,718678369,1437356741,2147483647};
 
 HashMap * createHashMap() {
@@ -31,11 +32,8 @@ void resizeHashMap(HashMap * hashmap) {
 HashNode * createNewNode(const char * key, const Value * data, HashNode * next) {
 	HashNode * node = (HashNode *)malloc(sizeof(HashNode));
 	node->next = next;
-	node->data = (Value *)malloc(sizeof(Value));
 	node->data = copyValue(data);
-	node->key = (char *)malloc(sizeof(char) * (strlen(key) + 1));
-	strcpy(node->key, key);
-//	strcpy(node->data, data);
+	node->key = copyString(key);
 	return node;
 }
 
@@ -53,9 +51,7 @@ void setElement(HashMap * hashMap, const char * key, const Value * data) {
 	}
 	while (node != NULL) {
 		if (strcmp(node->key, key) == 0) {
-			free(node->data);
-			node->data = (Value *)malloc(sizeof(Value));
-			//node->data = data;
+			freeValue(node->data);
 			node->data = copyValue(data);
 			return;
 		}

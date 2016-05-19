@@ -8,7 +8,7 @@
 //×Ö·û´¦Àí
 
 char * copyString(const char *src) {
-	char *ret = (char *)malloc(sizeof(strlen(src) + 1));
+	char *ret = (char *)malloc(sizeof(char)*(strlen(src) + 1));
 	strcpy(ret, src);
 	return ret;
 }

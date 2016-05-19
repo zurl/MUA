@@ -87,8 +87,9 @@ Value * eval(ListInstance * listInstance) {
 				registerA = eval(listInstance);
 			}
 			else if (func->argc == 2) {
-				registerA = eval(listInstance);
+				Value *tmp = eval(listInstance);
 				registerB = eval(listInstance);
+				registerA = tmp;
 			}
 			else {
 				//future

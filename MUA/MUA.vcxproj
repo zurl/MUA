@@ -39,6 +39,9 @@
   <ItemGroup>
     <None Include="test.mua" />
   </ItemGroup>
+  <ItemGroup>
+    <Text Include="old.txt" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{FD4D1CE5-A1F8-4AC8-8D63-8A689C6B1F3E}</ProjectGuid>
     <RootNamespace>MUA</RootNamespace>

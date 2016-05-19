@@ -2,9 +2,11 @@
 #include "Runtime.h"
 #include "Function.h"
 #include <stdlib.h>
-
+#include <time.h>
+#include <stdlib.h>
 int main(int argc,char * argv) {
 	//决定交互模式
+	srand((unsigned)time(NULL));
 	int mode = 0;
 	if (argc == 0)mode = 1;
 	//读入Buffer
