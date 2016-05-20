@@ -1,0 +1,9 @@
+make 'var1  1 
+make 'var2  1.000000 
+make 'var3  -1 
+make 'var4  'hello 
+make 'var5  [  'test   ] 
+make 'var6  [  [  ]   [  print   'helloworld   endl   ]   ] 
+make 'pi  null 
+make 'if  null 
+make 'run  null 
