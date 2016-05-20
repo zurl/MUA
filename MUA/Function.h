@@ -2,7 +2,16 @@
 #ifndef FUNCTION_H
 #define FUNCTION_H
 #include "Value.h"
-void initSystemFunction(void);
+
+typedef struct SSysFunc {
+	char * name;
+	FunctionData func;
+	int argc;
+}SysFunc;
+
+void initFunction(void);
+extern SysFunc sysFunc[];
+extern SysFunc globalFunc[];
 
 /*Arithmetic.c*/
 Value * SFtest(void);
@@ -26,5 +35,10 @@ Value * SFbutlast(void);
 Value * SFword(void);
 Value * SFlist(void);
 Value * SFjoin(void);
-
+Value * SFnot(void);
+Value * SFand(void);
+Value * SFor(void);
+Value * SFrandom(void);
+Value * SFsqrt(void);
+Value * SFitem(void);
 #endif

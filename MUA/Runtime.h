@@ -16,6 +16,7 @@ void initSystemSymbolTable(void);
 extern SymbolTable * symbolTable;
 extern Value * registerA;
 extern Value * registerB;
+extern Value * registerC;
 extern int registerTestFlag;
 
 #define EXCHANGE_BUFFER_SIZE 256

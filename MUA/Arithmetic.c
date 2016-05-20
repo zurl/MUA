@@ -347,3 +347,36 @@ Value * SFbutlast() {
 		return ret;
 	}
 }
+Value * SFitem(void) {
+	if (registerA->type != VList && registerA->type != VLiteral) {
+		printf("Syntax Error: Command `item` can only recieve `list` or `word` value as first arguments.\n");
+		return getValueFromNull();
+	}
+	if (registerA->type != VInteger) {
+		printf("Syntax Error: Command `item` can only recieve integer value as second arguments.\n");
+		return getValueFromNull();
+	}
+	if (registerA->type == VWord) {
+		int len = strlen(registerA->data->word);
+		if (registerB->data->integer <= 0 || registerB->data->integer > len) {
+			printf("Runtime Error: illegal length.\n");
+			return getValueFromNull();
+		}
+		return getValueFromSubString(registerB->data->word, registerB->data->integer - 1, registerB->data->integer - 1);
+	}
+	else {
+		ListNode * node = registerA->data->list->node;
+		if (registerB->data->integer <= 0 ) {
+			printf("Runtime Error: illegal length.\n");
+			return getValueFromNull();
+		}
+		for (int i = 1; i <= registerB->data->integer; i++) {
+			if (node->next != NULL)node = node->next;
+			else {
+				printf("Runtime Error: illegal length.\n");
+				return getValueFromNull();
+			}
+		}
+		return copyValue(node->data);		
+	}
+}

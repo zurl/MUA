@@ -47,5 +47,5 @@ Value * getValueFromNumber(long long x);
 Value * getValueFromReal(double x);
 Value * getValueFromStr(const char * x);
 Value * getValueFromNull(void);
-
+void freeList(List * value);
 #endif

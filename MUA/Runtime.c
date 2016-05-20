@@ -9,6 +9,7 @@
 SymbolTable * symbolTable;
 Value * registerA;
 Value * registerB;
+Value * registerC;
 int registerTestFlag = 0;
 
 void initSystemSymbolTable(){
@@ -91,8 +92,15 @@ Value * eval(ListInstance * listInstance) {
 				registerB = eval(listInstance);
 				registerA = tmp;
 			}
+			else if (func->argc == 3) {
+				Value * r1 = eval(listInstance);
+				Value * r2 = eval(listInstance);
+				registerC = eval(listInstance);
+				registerA = r1;
+				registerB = r2;
+			}
 			else {
-				//future
+				//todo::
 			}
 			return func->data();
 		}

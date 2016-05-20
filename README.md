@@ -10,21 +10,16 @@
 
 * `//`：注释
 * `: <word>`：与thing相同
-* `read`：返回一个从标准输入读取的数字或单词
-* `readlinst`：返回一个从标准输入读取的一行，构成一个列表，行中每个以空格分隔的部分是list的一个元素
 * 运算符operator
 	* `mod`：`<operator> <number> <number>`
 	* `eq`, `gt`, `lt`：`<operator> <number|word> <number|word>`
-* `item <number> <word|list>`：返回word或列表中的第number项字符或元素
-* `repeat <number> <list>`：运行list中的代码number次
-* `stop`：停止当前代码的执行。当前代码可能是run、repeat、if或函数中的代码
-* `wait <number>`：等待number个ms
+* `wait <number>`：等待number个ms //PLATFORM RELATIVE
 * `save <word>`：保存当前命名空间在word文件中
 * `load <word>`：从word文件中装载内容，加入当前命名空间
 * `erall`：清除当前命名空间的全部内容
 * `poall`：列出当前命名空间的全部名字
 * `local <word>`：设定该word为本地名字。参数也是本地名字
- 
+
 下面是原题目
 ============================
 

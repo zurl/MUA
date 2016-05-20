@@ -20,8 +20,9 @@ int main(int argc,char * argv) {
 		ListInstance * newInstance = (ListInstance *)malloc(sizeof(ListInstance));
 		newInstance->now = list->node;
 		initSystemSymbolTable();
-		initSystemFunction();
+		initFunction(sysFunc);
 		initGlobalSymbolTable();
+		initFunction(globalFunc);
 		call(newInstance);
 
 		return 0;

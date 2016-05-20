@@ -6,16 +6,6 @@
 #include <stdlib.h>
 
 
-
-typedef struct SSysFunc {
-	char * name;
-	FunctionData func;
-	int argc;
-}SysFunc;
-
-
-
-
 inline Value * SFprint(void) {
 	printValue(registerA);
 	return getValueFromNull();
@@ -97,9 +87,10 @@ Value * SFrepeat() {
 		return getValueFromNull();
 	}
 	int times = registerA->data->integer;
+	ListNode * tmp = registerB->data->list->node;
 	for (int i = 1; i <= times; i++) {
 		ListInstance * listInstance = (ListInstance *)malloc(sizeof(ListInstance));
-		listInstance->now = registerB->data->list->node;
+		listInstance->now = tmp;
 		while (listInstance->now != NULL) {
 			Value * tmp = eval(listInstance);
 			if (tmp->type == VFuncStop) {
@@ -113,39 +104,113 @@ Value * SFrepeat() {
 	return getValueFromNull();
 }
 
-void initSystemFunction() {
-	SysFunc sysFunc[] = { 
-		{ "endl",SFendl, 0},
-		{ "add",SFadd,2 },
-		{ "sub",SFsub,2 },
-		{ "mul",SFmul,2 },
-		{ "div",SFdiv,2 },
-		{ "print",SFprint,1 },
-		{ "make",SFmake,2 },
-		{ "thing",SFthing,1 },
-		{ "true",SFtrue,0 },
-		{ "false",SFfalse,0 },
-		{ "islist",SFislist,1 },
-		{ "isword",SFisword,1 },
-		{ "isnumber",SFisnumber,1 },
-		{ "isbool",SFisbool,1 },
-		{ "isempty",SFisempty,1},
-		{ "stop",SFstop,0 },
-		{ "output",SFoutput,1 },
-		{ "test",SFtest,1 },
-		{ "iftrue",SFiftrue,1 },
-		{ "iffalse",SFiffalse,1 },
-		{ "first", SFfirst, 1},
-		{ "last", SFlast, 1 },
-		{ "butfirst", SFbutfirst, 1 },
-		{ "butlast",SFbutlast,1 },
-		{ "word",SFword,2 },
-		{ "list",SFlist,2 },
-		{ "join",SFjoin,2 },
-		{ "isname",SFisname,1},
-		{ "repeat",SFrepeat,2},
-		{ "erase",SFerase,1}
-	};
+Value * SFread() {
+	char * buffer = (char *)malloc(sizeof(char) * EXCHANGE_BUFFER_SIZE);
+	scanf("%s", buffer);
+	TokenList * tokenList = getTokenListFromBuffer(buffer);
+	List * list = getListFromTokenList(tokenList);
+	Value * ret = copyValue(list->node);
+	free(buffer);
+	//todo::freeTokenList();
+	//todo::freeList();
+	return ret;
+}
+Value * SFreadlist() {
+	char * buffer = (char *)malloc(sizeof(char) * EXCHANGE_BUFFER_SIZE);
+	int now = 0;
+	while ((buffer[now] = getchar()) != 'n')now++;
+	buffer[now] = 0;
+	TokenList * tokenList = getTokenListFromBuffer(buffer);
+	List * list = getListFromTokenList(tokenList);
+	Value * ret = (Value *)malloc(sizeof(Value));
+	ret->data = (ValueData *)malloc(sizeof(ValueData));
+	ret->data->list = list;
+	free(buffer);
+	//freeTokenList todo::
+	return ret;
+}
+
+Value * SFpi(void) {
+	return getValueFromReal(3.14159);
+}
+Value * SFrun(void) {
+	if (registerA->type != VList) {
+		printf("Syntax Error: `run` only can recieve list as first argument.\n");
+		return getValueFromNull();
+	}
+	ListInstance * listInstance = (ListInstance *)malloc(sizeof(ListInstance));
+	listInstance->now = registerA->data->list;
+	call(listInstance);
+	return getValueFromNull();
+}
+Value * SFif(void) {
+	if (registerA->type != VBoolean) {
+		printf("Syntax Error: `run` only can recieve `bool` as first argument.\n");
+		return getValueFromNull();
+	}
+	if (registerB->type != VList || registerC->type != VList) {
+		printf("Syntax Error: `if` only can recieve  `list` as second and third argument.\n");
+		return getValueFromNull();
+	}
+	if (registerA->data->integer == 1){
+		ListInstance * listInstance = (ListInstance *)malloc(sizeof(ListInstance));
+		listInstance->now = registerB->data->list;
+		call(listInstance);
+	}
+	else {
+		ListInstance * listInstance = (ListInstance *)malloc(sizeof(ListInstance));
+		listInstance->now = registerC->data->list;
+		call(listInstance);
+	}
+	return getValueFromNull();
+}
+
+SysFunc sysFunc[] = {
+	{ "add",SFadd,2 },
+	{ "sub",SFsub,2 },
+	{ "mul",SFmul,2 },
+	{ "div",SFdiv,2 },
+	{ "print",SFprint,1 },
+	{ "make",SFmake,2 },
+	{ "thing",SFthing,1 },
+	{ "true",SFtrue,0 },
+	{ "false",SFfalse,0 },
+	{ "islist",SFislist,1 },
+	{ "isword",SFisword,1 },
+	{ "isnumber",SFisnumber,1 },
+	{ "isbool",SFisbool,1 },
+	{ "isempty",SFisempty,1 },
+	{ "stop",SFstop,0 },
+	{ "output",SFoutput,1 },
+	{ "test",SFtest,1 },
+	{ "iftrue",SFiftrue,1 },
+	{ "iffalse",SFiffalse,1 },
+	{ "first", SFfirst, 1 },
+	{ "last", SFlast, 1 },
+	{ "butfirst", SFbutfirst, 1 },
+	{ "butlast",SFbutlast,1 },
+	{ "word",SFword,2 },
+	{ "list",SFlist,2 },
+	{ "join",SFjoin,2 },
+	{ "isname",SFisname,1 },
+	{ "repeat",SFrepeat,2 },
+	{ "erase",SFerase,1 } ,
+	{ "not",SFnot,1 },
+	{ "and",SFand,2 },
+	{ "or",SFor,2 },
+	{ "random",SFrandom,1 },
+	{ "sqrt",SFsqrt,1 },
+	{ "item",SFitem,2 },
+	{ "read",SFread,0 },
+	{ "readlist",SFreadlist,0 }
+};
+SysFunc globalFunc[] = {
+	{ "endl",SFendl, 0 },
+	{ "if", SFif,3},
+	{ "pi", SFpi,0},
+	{ "run",SFrun,0}
+};
+void initFunction(SysFunc * sysFunc) {
 	int length = (sizeof(sysFunc) / sizeof(SysFunc));
 	for (int i = 0; i <= length - 1; i++) {
 		Value * func = (Value *)malloc(sizeof(Value));
