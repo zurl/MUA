@@ -164,54 +164,81 @@ Value * SFif(void) {
 	}
 	return getValueFromNull();
 }
+Value * SFlocal(void) {
+	if (registerA->type != VLiteral) {
+		printf("Syntax Error: `local` only can recieve `word` as first argument.\n");
+		return getValueFromNull();
+	}
+	setSymbol(symbolTable, registerA->data->word, getValueFromNull());
+	return getValueFromNull();
+}
+Value * SFnull(void) {
+	return getValueFromNull();
+}
+Value * SFpoall(void) {
+	int len = symbolTable->hashMap->len;
+	for (int i = 0; i < len; i++) {
+		HashNode * hn = symbolTable->hashMap->data[i];
+		while (hn != NULL) {
+			printf("%s : ", hn->key);
+			printValue(hn->data);
+			printf("\n");
+			hn = hn->next;
+		}
+	}
+	return getValueFromNull();
+}
+Value * SFerall(void) {
+	SymbolTable * tmp = symbolTable->next;
+	freeSymbolTable(symbolTable);
+	symbolTable = (SymbolTable *)malloc(sizeof(SymbolTable));
+	symbolTable->hashMap = createHashMap();
+	symbolTable->next = tmp;
+	return getValueFromNull();
+}
+Value * SFload(void) {
+	if (registerA->type != VLiteral) {
+		printf("Syntax Error: `save` only can recieve `word` as first argument.\n");
+		return getValueFromNull();
+	}
+	char * buffer = (char *)malloc(sizeof(char) * 4096);
+	if (buffer == NULL) {
+		printf("Runtime Error: invaild filename.\n");
+		return getValueFromNull();
+	}
+	buffer = getBufferFromFile(registerA->data->word);
+	TokenList * tokenList = getTokenListFromBuffer(buffer);
+	List * list = getListFromTokenList(tokenList);
+	ListInstance * listInstance = (ListInstance *)malloc(sizeof(ListInstance));
+	listInstance->now = registerA->data->list;
+	call(listInstance);
+	return getValueFromNull();
+}
+Value * SFsave(void) {
+	if (registerA->type != VLiteral) {
+		printf("Syntax Error: `save` only can recieve `word` as first argument.\n");
+		return getValueFromNull();
+	}
+	FILE * tmp = freopen(registerA->data->word, "w", stdout);
+	if (tmp == NULL) {
+		printf("Runtime Error: invaild filename.\n");
+		return getValueFromNull();
+	}
+	int len = symbolTable->hashMap->len;
+	for (int i = 0; i < len; i++) {
+		HashNode * hn = symbolTable->hashMap->data[i];
+		while (hn != NULL) {
+			printf("make \'%s ", hn->key);
+			printRawValue(hn->data);
+			printf("\n");
+			hn = hn->next;
+		}
+	}
+	fclose(stdout);
+	return getValueFromNull();
+}
 
-SysFunc sysFunc[] = {
-	{ "add",SFadd,2 },
-	{ "sub",SFsub,2 },
-	{ "mul",SFmul,2 },
-	{ "div",SFdiv,2 },
-	{ "print",SFprint,1 },
-	{ "make",SFmake,2 },
-	{ "thing",SFthing,1 },
-	{ "true",SFtrue,0 },
-	{ "false",SFfalse,0 },
-	{ "islist",SFislist,1 },
-	{ "isword",SFisword,1 },
-	{ "isnumber",SFisnumber,1 },
-	{ "isbool",SFisbool,1 },
-	{ "isempty",SFisempty,1 },
-	{ "stop",SFstop,0 },
-	{ "output",SFoutput,1 },
-	{ "test",SFtest,1 },
-	{ "iftrue",SFiftrue,1 },
-	{ "iffalse",SFiffalse,1 },
-	{ "first", SFfirst, 1 },
-	{ "last", SFlast, 1 },
-	{ "butfirst", SFbutfirst, 1 },
-	{ "butlast",SFbutlast,1 },
-	{ "word",SFword,2 },
-	{ "list",SFlist,2 },
-	{ "join",SFjoin,2 },
-	{ "isname",SFisname,1 },
-	{ "repeat",SFrepeat,2 },
-	{ "erase",SFerase,1 } ,
-	{ "not",SFnot,1 },
-	{ "and",SFand,2 },
-	{ "or",SFor,2 },
-	{ "random",SFrandom,1 },
-	{ "sqrt",SFsqrt,1 },
-	{ "item",SFitem,2 },
-	{ "read",SFread,0 },
-	{ "readlist",SFreadlist,0 }
-};
-SysFunc globalFunc[] = {
-	{ "endl",SFendl, 0 },
-	{ "if", SFif,3},
-	{ "pi", SFpi,0},
-	{ "run",SFrun,0}
-};
-void initFunction(SysFunc * sysFunc) {
-	int length = (sizeof(sysFunc) / sizeof(SysFunc));
+void initFunction(SysFunc * sysFunc ,int length) {
 	for (int i = 0; i <= length - 1; i++) {
 		Value * func = (Value *)malloc(sizeof(Value));
 		func->data = (ValueData *)malloc(sizeof(ValueData));
@@ -223,3 +250,59 @@ void initFunction(SysFunc * sysFunc) {
 	}
 }
 
+void initSystemFunction() {
+	SysFunc sysFunc[] = {
+		{ "add",SFadd,2 },
+		{ "sub",SFsub,2 },
+		{ "mul",SFmul,2 },
+		{ "div",SFdiv,2 },
+		{ "print",SFprint,1 },
+		{ "make",SFmake,2 },
+		{ "thing",SFthing,1 },
+		{ "true",SFtrue,0 },
+		{ "false",SFfalse,0 },
+		{ "islist",SFislist,1 },
+		{ "isword",SFisword,1 },
+		{ "isnumber",SFisnumber,1 },
+		{ "isbool",SFisbool,1 },
+		{ "isempty",SFisempty,1 },
+		{ "stop",SFstop,0 },
+		{ "output",SFoutput,1 },
+		{ "test",SFtest,1 },
+		{ "iftrue",SFiftrue,1 },
+		{ "iffalse",SFiffalse,1 },
+		{ "first", SFfirst, 1 },
+		{ "last", SFlast, 1 },
+		{ "butfirst", SFbutfirst, 1 },
+		{ "butlast",SFbutlast,1 },
+		{ "word",SFword,2 },
+		{ "list",SFlist,2 },
+		{ "join",SFjoin,2 },
+		{ "isname",SFisname,1 },
+		{ "repeat",SFrepeat,2 },
+		{ "erase",SFerase,1 } ,
+		{ "not",SFnot,1 },
+		{ "and",SFand,2 },
+		{ "or",SFor,2 },
+		{ "random",SFrandom,1 },
+		{ "sqrt",SFsqrt,1 },
+		{ "item",SFitem,2 },
+		{ "read",SFread,0 },
+		{ "readlist",SFreadlist,0 },
+		{ "eq",SFeq,2 },
+		{ "gt",SFgt,2 },
+		{ "lt",SFlt,2 },
+		{ "mod",SFmod,2 },
+		{ "endl",SFendl, 0 },
+		{ "null",SFnull, 0 }
+	};
+	initFunction(sysFunc, sizeof(sysFunc) / sizeof(SysFunc));
+}
+void initGlobalFunction(void) {
+	SysFunc globalFunc[] = {
+		{ "if", SFif,3 },
+		{ "pi", SFpi,0 },
+		{ "run",SFrun,0 }
+	};
+	initFunction(globalFunc, sizeof(globalFunc) / sizeof(SysFunc));
+}

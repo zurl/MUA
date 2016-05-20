@@ -80,7 +80,7 @@ Value *SFand(void) {
 		printf("Syntax Error: Command `and` can only be applied on `bool` value.\n");
 		return getValueFromNull();
 	}
-	if (registerA->data->integer && registerA->data->integer)return SFture();
+	if (registerA->data->integer && registerA->data->integer)return SFtrue();
 	return SFfalse();
 }
 Value *SFor(void) {
@@ -88,7 +88,7 @@ Value *SFor(void) {
 		printf("Syntax Error: Command `or` can only be applied on `bool` value.\n");
 		return getValueFromNull();
 	}
-	if (registerA->data->integer || registerA->data->integer)return SFture();
+	if (registerA->data->integer || registerA->data->integer)return SFtrue();
 	return SFfalse();
 }
 
@@ -378,5 +378,81 @@ Value * SFitem(void) {
 			}
 		}
 		return copyValue(node->data);		
+	}
+}
+Value * getValueFromBool(int x) {
+	if (x)return SFtrue();
+	else return SFfalse();
+}
+Value * SFeq(void) {
+	if (registerA->type == VInteger && registerB->type == VInteger) {
+		return getValueFromBool(registerA->data->integer == registerB->data->integer);
+	}
+	else if (registerA->type == VInteger && registerB->type == VReal){
+		return getValueFromBool(registerA->data->integer == registerB->data->real);
+	}
+	else if (registerA->type == VReal && registerB->type == VInteger) {
+		return getValueFromBool(registerA->data->real == registerB->data->integer);
+	}
+	else if (registerA->type == VReal && registerB->type == VReal) {
+		return getValueFromBool(registerA->data->real == registerB->data->real);
+	}
+	else if (registerA->type == VWord && registerB->type == VWord) {
+		return getValueFromBool(strcmp(registerA->data->word,registerB->data->word) == 0);
+	}
+	else {
+		printf("Syntax Error: Command `eq` can only recieve `word` or `number` value as arguments.\n");
+		return getValueFromNull();
+	}
+}
+Value * SFgt(void) {
+	if (registerA->type == VInteger && registerB->type == VInteger) {
+		return getValueFromBool(registerA->data->integer > registerB->data->integer);
+	}
+	else if (registerA->type == VInteger && registerB->type == VReal) {
+		return getValueFromBool(registerA->data->integer > registerB->data->real);
+	}
+	else if (registerA->type == VReal && registerB->type == VInteger) {
+		return getValueFromBool(registerA->data->real > registerB->data->integer);
+	}
+	else if (registerA->type == VReal && registerB->type == VReal) {
+		return getValueFromBool(registerA->data->real > registerB->data->real);
+	}
+	else if (registerA->type == VWord && registerB->type == VWord) {
+		return getValueFromBool(strcmp(registerA->data->word, registerB->data->word) > 0);
+	}
+	else {
+		printf("Syntax Error: Command `gt` can only recieve `word` or `number` value as arguments.\n");
+		return getValueFromNull();
+	}
+}
+Value * SFlt(void) {
+	if (registerA->type == VInteger && registerB->type == VInteger) {
+		return getValueFromBool(registerA->data->integer < registerB->data->integer);
+	}
+	else if (registerA->type == VInteger && registerB->type == VReal) {
+		return getValueFromBool(registerA->data->integer < registerB->data->real);
+	}
+	else if (registerA->type == VReal && registerB->type == VInteger) {
+		return getValueFromBool(registerA->data->real < registerB->data->integer);
+	}
+	else if (registerA->type == VReal && registerB->type == VReal) {
+		return getValueFromBool(registerA->data->real < registerB->data->real);
+	}
+	else if (registerA->type == VWord && registerB->type == VWord) {
+		return getValueFromBool(strcmp(registerA->data->word, registerB->data->word) < 0);
+	}
+	else {
+		printf("Syntax Error: Command `lt` can only recieve `word` or `number` value as arguments.\n");
+		return getValueFromNull();
+	}
+}
+Value * SFmod(void) {
+	if (registerA->type == VInteger && registerB->type == VInteger) {
+		return getValueFromNumber(registerA->data->integer % registerB->data->integer);
+	}
+	else {
+		printf("Syntax Error: Command `mod` can only recieve integer value as arguments.\n");
+		return getValueFromNull();
 	}
 }

@@ -35,6 +35,24 @@ void printValue(const Value * value) {
 	if (value->type == VBoolean)if (value->data->integer == 1)printf("true");else printf("false");
 	if (value->type == VList)printList(value->data->list);
 }
+void printRawList(const List * value) {
+	printf(" [ ");
+	ListNode * node = value->node;
+	while (node != NULL) {
+		printRawValue(node->data); putchar(' ');
+		node = node->next;
+	}
+	printf(" ] ");
+}
+void printRawValue(const Value * value) {
+	if (value->type == VNull)printf(" null ");
+	if (value->type == VInteger)printf(" %lld ", value->data->integer);
+	if (value->type == VReal)printf(" %f ", value->data->real);
+	if (value->type == VWord)printf( "%s ", value->data->word);
+	if (value->type == VLiteral)printf(" \'%s ", value->data->word);
+	if (value->type == VBoolean)if (value->data->integer == 1)printf(" true "); else printf(" false ");
+	if (value->type == VList)printRawList(value->data->list);
+}
 //基本数据类型
 void freeValue(Value * value) {
 	//if (value->type == VNull)

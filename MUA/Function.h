@@ -9,9 +9,8 @@ typedef struct SSysFunc {
 	int argc;
 }SysFunc;
 
-void initFunction(void);
-extern SysFunc sysFunc[];
-extern SysFunc globalFunc[];
+void initSystemFunction(void);
+void initGlobalFunction(void);
 
 /*Arithmetic.c*/
 Value * SFtest(void);
@@ -41,4 +40,8 @@ Value * SFor(void);
 Value * SFrandom(void);
 Value * SFsqrt(void);
 Value * SFitem(void);
+Value * SFeq(void);
+Value * SFgt(void);
+Value * SFlt(void);
+Value * SFmod(void);
 #endif

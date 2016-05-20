@@ -7,6 +7,7 @@
 #include "Runtime.h"
 
 SymbolTable * symbolTable;
+SymbolTable * globalTable;
 Value * registerA;
 Value * registerB;
 Value * registerC;
@@ -57,10 +58,10 @@ Value * eval(ListInstance * listInstance) {
 		
 		Value * ret;
 		if (command->type == VList) {
-			SymbolTable * tmp = (SymbolTable *)malloc(sizeof(SymbolTable));
-			tmp->hashMap = createHashMap();
-			tmp->next = symbolTable;
-			symbolTable = tmp;
+			SymbolTable * saved = symbolTable;
+			symbolTable = (SymbolTable *)malloc(sizeof(SymbolTable));
+			symbolTable->hashMap = createHashMap();
+			symbolTable->next = globalTable;
 			//argu inject
 			listInstance->now = listInstance->now->next;
 			ListNode * param = command->data->list->node->data->data->list->node;
@@ -75,9 +76,8 @@ Value * eval(ListInstance * listInstance) {
 			ListInstance * newInstance = (ListInstance *)malloc(sizeof(ListInstance));
 			newInstance->now = command->data->list->node->next->data->data->list->node;
 			ret = call(newInstance);
-			tmp = symbolTable;
-			symbolTable = symbolTable->next;
-			freeSymbolTable(tmp);
+			freeSymbolTable(symbolTable);
+			symbolTable = saved;
 			//DestorySymbolTable
 			return ret;
 		}

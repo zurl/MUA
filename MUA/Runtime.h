@@ -14,6 +14,7 @@ Value * call(ListInstance * listInstance);
 void initGlobalSymbolTable(void);
 void initSystemSymbolTable(void);
 extern SymbolTable * symbolTable;
+extern SymbolTable * globalTable;
 extern Value * registerA;
 extern Value * registerB;
 extern Value * registerC;
