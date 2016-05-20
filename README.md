@@ -8,8 +8,7 @@
 未完成的操作
 ============================
 
-* `//`：注释
-* `: <word>`：与thing相同
+由于平台相关：暂不完成。
 * `wait <number>`：等待number个ms //PLATFORM RELATIVE
 
 下面是原题目

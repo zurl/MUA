@@ -26,7 +26,23 @@ Buffer * getBufferFromFile(char * fileName) {
 	int size = ftell(file);
 	buffer->data = (char *)(malloc(sizeof(char) * (size+1)));
 	fseek(file, 0L, 0);
-	while ((buffer->data[buffer->ed] = (char)fgetc(file)) != EOF)buffer->ed++;
+	int onComment = 0;
+	while ((buffer->data[buffer->ed] = (char)fgetc(file)) != EOF) {
+		if (onComment) {
+			if (buffer->data[buffer->ed] == '\n') {
+				onComment = 0;
+			}
+		}
+		else {
+			if (buffer->ed >= 1 && buffer->data[buffer->ed] == '/' && buffer->data[buffer->ed - 1] == '/') {
+				onComment = 1;
+				buffer->ed--;
+			}
+			else {
+				buffer->ed++;
+			}
+		}		
+	}
 	buffer->data[buffer->ed] = '\n';
 	fclose(file);
 	return buffer;
@@ -36,7 +52,23 @@ Buffer * getBufferFromConsole() {
 	buffer->st = 0;
 	buffer->ed = 0;
 	buffer->data = (char *)(malloc(sizeof(char) * 1024));
-	while((buffer->data[buffer->ed] = (char)getchar()) != '\n')buffer->ed++;
+	int onComment = 0;
+	while((buffer->data[buffer->ed] = (char)getchar()) != '\n') {
+		if (onComment) {
+			if (buffer->data[buffer->ed] == '\n') {
+				onComment = 0;
+			}
+		}
+		else {
+			if (buffer->ed >= 1 && buffer->data[buffer->ed] == '/' && buffer->data[buffer->ed - 1] == '/') {
+				onComment = 1;
+				buffer->ed--;
+			}
+			else {
+				buffer->ed++;
+			}
+		}
+	}
 	return buffer;
 }
 //´Ê·¨·ÖÎö
@@ -95,6 +127,13 @@ TokenList * getTokenListFromBuffer(Buffer * buffer) {
 			}
 			else if (c == ']') {
 				token->type = TRSB;
+				now = 0;
+				buffer->st++;
+				continue;
+			}
+			else if (c == ':') {
+				token->type = TWord;
+				token->data = copyString("thing");
 				now = 0;
 				buffer->st++;
 				continue;

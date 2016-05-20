@@ -294,7 +294,11 @@ void initSystemFunction() {
 		{ "lt",SFlt,2 },
 		{ "mod",SFmod,2 },
 		{ "endl",SFendl, 0 },
-		{ "null",SFnull, 0 }
+		{ "null",SFnull, 0 },
+		{ "load",SFload,1},
+		{ "save",SFsave,1},
+		{ "erall",SFerall,0},
+		{ "poall",SFpoall,0}
 	};
 	initFunction(sysFunc, sizeof(sysFunc) / sizeof(SysFunc));
 }

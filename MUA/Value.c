@@ -55,14 +55,9 @@ void printRawValue(const Value * value) {
 }
 //基本数据类型
 void freeValue(Value * value) {
-	//if (value->type == VNull)
-	//if (value->type == VInteger)printf("%lld", value->data->integer);
-	//if (value->type == VReal)printf("%0.2f", value->data->real);
 	if (value->type == VWord || value->type == VLiteral) {
 		free(value->data->word);
-	}
-	//if (value->type == VBoolean)if (value->data->integer == 1)printf("true"); else printf("false");
-	if (value->type == VList) {
+	}if (value->type == VList) {
 		freeList(value->data->list);
 	}
 	if (value->data != NULL)free(value->data);
