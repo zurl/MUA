@@ -35,23 +35,23 @@ void printValue(const Value * value) {
 	if (value->type == VBoolean)if (value->data->integer == 1)printf("true");else printf("false");
 	if (value->type == VList)printList(value->data->list);
 }
-void printRawList(const List * value) {
-	printf(" [ ");
+void printRawList(FILE * f, const List * value) {
+	fprintf(f," [ ");
 	ListNode * node = value->node;
 	while (node != NULL) {
-		printRawValue(node->data); putchar(' ');
+		printRawValue(f, node->data); fprintf(f, " ");
 		node = node->next;
 	}
-	printf(" ] ");
+	fprintf(f," ] ");
 }
-void printRawValue(const Value * value) {
-	if (value->type == VNull)printf(" null ");
-	if (value->type == VInteger)printf(" %lld ", value->data->integer);
-	if (value->type == VReal)printf(" %f ", value->data->real);
-	if (value->type == VWord)printf( "%s ", value->data->word);
-	if (value->type == VLiteral)printf(" \'%s ", value->data->word);
-	if (value->type == VBoolean)if (value->data->integer == 1)printf(" true "); else printf(" false ");
-	if (value->type == VList)printRawList(value->data->list);
+void printRawValue(FILE * f,const Value * value) {
+	if (value->type == VNull || value->type == VFunction)fprintf(f," null ");
+	if (value->type == VInteger)fprintf(f," %lld ", value->data->integer);
+	if (value->type == VReal)fprintf(f," %f ", value->data->real);
+	if (value->type == VWord)fprintf(f," %s ", value->data->word);
+	if (value->type == VLiteral)fprintf(f," \'%s ", value->data->word);
+	if (value->type == VBoolean)if (value->data->integer == 1)fprintf(f," true "); else fprintf(f," false ");
+	if (value->type == VList)printRawList(f,value->data->list);
 }
 //基本数据类型
 void freeValue(Value * value) {
@@ -137,6 +137,9 @@ Value * createValue(const Token * token) {
 			return ret;
 		}
 	}
+	else {
+		return getValueFromNull();
+	}
 }
 Value * getValueFromNumber(long long x) {
 	Value * ret = (Value *)malloc(sizeof(Value));
@@ -159,7 +162,7 @@ Value * getValueFromStr(const char * x) {
 	ret->data->word = copyString(x);
 	return ret;
 }
-Value * getValueFromNull() {
+Value * getValueFromNull(void) {
 	Value * ret = (Value *)malloc(sizeof(Value));
 	ret->type = VNull;
 	ret->data = NULL;

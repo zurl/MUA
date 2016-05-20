@@ -3,6 +3,7 @@
 #include "HashMap.h"
 #include<stdio.h>
 #include "Symbol.h"
+#include <stdlib.h>
 
 Value * getSymbol(SymbolTable * symbolTable, const char * key) {
 	Value * ret;
@@ -27,5 +28,6 @@ void deleteSymbol(SymbolTable * symbolTable, const char *key) {
 }
 
 void freeSymbolTable(SymbolTable * symbolTable) {
-
+	freeHashMap(symbolTable->hashMap);
+	free(symbolTable);
 }

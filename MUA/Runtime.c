@@ -13,12 +13,12 @@ Value * registerB;
 Value * registerC;
 int registerTestFlag = 0;
 
-void initSystemSymbolTable(){
+void initSystemSymbolTable(void){
 	symbolTable = (SymbolTable*)malloc(sizeof(SymbolTable));
 	symbolTable->hashMap = createHashMap();
 	symbolTable->next = NULL;
 }
-void initGlobalSymbolTable() {
+void initGlobalSymbolTable(void) {
 	SymbolTable * tmp = symbolTable;
 	symbolTable = (SymbolTable*)malloc(sizeof(SymbolTable));
 	symbolTable->hashMap = createHashMap();

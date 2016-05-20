@@ -4,11 +4,10 @@
 #include "Value.h"
 #include "HashMap.h"
 #include "Input.h"
-const int pirmeArray[] = {17,37,79,163,331,673,1361,2729,5471,10949,21911,43853,87719,175447,350899,701819,1403641,2807303,5614657,11229331,22458671, 44917381,89834777,179669557,359339171,718678369,1437356741,2147483647};
 
-HashMap * createHashMap() {
+HashMap * createHashMap(void) {
 	HashMap * hashmap = (HashMap *)malloc(sizeof(HashMap));
-	hashmap->len = 17;
+	hashmap->len = 37;
 	hashmap->size = 0;
 	hashmap->data = (HashNode **)(malloc(sizeof(HashNode * ) * hashmap->len));
 	for (int i = 0; i <= hashmap->len - 1; i++)
@@ -25,10 +24,6 @@ int hashString(const char * str) {
 	return (hash & 0x7FFFFFFF);
 }
 
-void resizeHashMap(HashMap * hashmap) {
-	//µ±size >= len * 2Ê± resize;
-	//TODO:: next
-}
 HashNode * createNewNode(const char * key, const Value * data, HashNode * next) {
 	HashNode * node = (HashNode *)malloc(sizeof(HashNode));
 	node->next = next;
@@ -92,5 +87,18 @@ void removeElement(HashMap * hashMap, const char * key) {
 	}
 	return;
 }
-
+void freeHashMap(HashMap * hashMap) {
+	int len = hashMap->len;
+	for (int i = 0; i < len; i++) {
+		HashNode * hn = hashMap->data[i];
+		while (hn != NULL) {
+			free(hn->key);
+			freeValue(hn->data);
+			HashNode * tmp = hn;
+			hn = hn->next;
+			free(tmp);
+		}
+	}
+	free(hashMap);
+}
 //void forEachElement(HashMap * hashMap)

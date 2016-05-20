@@ -47,7 +47,7 @@ Buffer * getBufferFromFile(char * fileName) {
 	fclose(file);
 	return buffer;
 }
-Buffer * getBufferFromConsole() {
+Buffer * getBufferFromConsole(void) {
 	Buffer * buffer = malloc(sizeof(Buffer));
 	buffer->st = 0;
 	buffer->ed = 0;

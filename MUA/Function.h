@@ -44,4 +44,28 @@ Value * SFeq(void);
 Value * SFgt(void);
 Value * SFlt(void);
 Value * SFmod(void);
+
+/*function.h*/
+
+Value * SFprint(void);
+Value * SFmake(void);
+Value * SFthing(void);
+Value * SFoutput(void);
+Value * SFstop(void);
+Value * SFendl(void);
+Value * SFerase(void);
+Value * SFisname(void);
+Value * SFrepeat(void);
+Value * SFread(void);
+Value * SFreadlist(void);
+Value * SFpi(void);
+Value * SFrun(void);
+Value * SFif(void);
+Value * SFlocal(void);
+Value * SFnull(void);
+Value * SFpoall(void);
+Value * SFerall(void);
+Value * SFload(void);
+Value * SFsave(void);
+
 #endif

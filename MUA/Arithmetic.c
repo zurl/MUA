@@ -13,10 +13,10 @@ Value * abstractCalculate(IntHandeler i, RealHandeler r) {// $x,$y
 		return getValueFromNumber(i(registerA->data->integer, registerB->data->integer));
 	}
 	else if (registerA->type == VInteger && registerB->type == VReal) {
-		return getValueFromReal(r(registerA->data->integer, registerB->data->real));
+		return getValueFromReal(r((double)registerA->data->integer, registerB->data->real));
 	}
 	else if (registerA->type == VReal && registerB->type == VInteger) {
-		return getValueFromReal(r(registerA->data->real, registerB->data->integer));
+		return getValueFromReal(r(registerA->data->real, (double)registerB->data->integer));
 	}
 	else if (registerA->type == VReal && registerB->type == VReal) {
 		return getValueFromReal(r(registerA->data->real, registerB->data->real));
@@ -33,7 +33,7 @@ inline long long SFaddI(long long a, long long b) {
 inline double SFaddD(double a, double b) {
 	return a + b;
 }
-Value * SFadd() {
+Value * SFadd(void) {
 	return abstractCalculate(SFaddI, SFaddD);
 }
 /* SUB */
@@ -43,7 +43,7 @@ inline long long SFsubI(long long a, long long b) {
 inline double SFsubD(double a, double b) {
 	return a - b;
 }
-Value * SFsub() {
+Value * SFsub(void) {
 	return abstractCalculate(SFsubI, SFsubD);
 }
 /* MUL */
@@ -53,7 +53,7 @@ inline long long SFmulI(long long a, long long b) {
 inline double SFmulD(double a, double b) {
 	return a * b;
 }
-Value * SFmul() {
+Value * SFmul(void) {
 	return abstractCalculate(SFmulI, SFmulD);
 }
 /* DIV */
@@ -64,7 +64,7 @@ inline long long SFdivI(long long a, long long b) {
 inline double SFdivD(double a, double b) {
 	return a / b;
 }
-Value * SFdiv() {
+Value * SFdiv(void) {
 	return abstractCalculate(SFdivI, SFdivD);
 }
 Value *SFnot(void) {
@@ -104,7 +104,7 @@ Value *SFsqrt(void) {
 		printf("Syntax Error: Command `random` can only be applied on `number` value.\n");
 		return getValueFromNull();
 	}
-	if (registerA->type == VInteger)return getValueFromReal(sqrt(registerA->data->integer));
+	if (registerA->type == VInteger)return getValueFromReal(sqrt((double)registerA->data->integer));
 	else return getValueFromReal(sqrt(registerA->data->real));
 }
 
@@ -152,15 +152,15 @@ Value * SFisempty(void) {
 		return getValueFromNull();
 	}
 }
-Value * SFtest() {
+Value * SFtest(void) {
 	if (registerA->type != VBoolean) {
 		printf("Syntax Error: Command `test` can only be applied on `bool` value.\n");
 		return getValueFromNull();
 	}
-	registerTestFlag = registerA->data->integer;
+	registerTestFlag = (int)registerA->data->integer;
 	return getValueFromNull();
 }
-Value * SFiftrue() {
+Value * SFiftrue(void) {
 	if (registerA->type != VList) {
 		printf("Syntax Error: Command `iftrue` can only be applied on `list` value.\n");
 		return getValueFromNull();
@@ -173,7 +173,7 @@ Value * SFiftrue() {
 	}
 	return getValueFromNull();
 }
-Value * SFiffalse() {
+Value * SFiffalse(void) {
 	if (registerA->type != VList) {
 		printf("Syntax Error: Command `iffalse` can only be applied on `list` value.\n");
 		return getValueFromNull();
@@ -186,7 +186,7 @@ Value * SFiffalse() {
 	}
 	return getValueFromNull();
 }
-Value * SFword() {
+Value * SFword(void) {
 	if (registerA->type != VLiteral) {
 		printf("Syntax Error: Command `word` can only recieve `word` value as first argument .\n");
 		return getValueFromNull();
@@ -206,7 +206,7 @@ Value * SFword() {
 	ret->data->word = buffer;
 	return ret;	
 }
-Value * SFlist() {
+Value * SFlist(void) {
 	if (registerB->type != VList &&registerA->type != VList) {
 		printf("Syntax Error: Command `list` can only recieve `list` value as arguments.\n");
 		return getValueFromNull();
@@ -222,11 +222,11 @@ Value * SFlist() {
 		node->next = tmp2->node;
 	}
 	Value * ret = copyValue(registerA);
-	if (tmp1->node == tmp2->node)tmp1->node == NULL;
+	if (tmp1->node == tmp2->node)tmp1->node = NULL;
 	else node->next = NULL;
 	return ret;
 }
-Value * SFjoin() {
+Value * SFjoin(void) {
 	if (registerA->type != VList) {
 		printf("Syntax Error: Command `join` can only recieve `list` value as the first arguments.\n");
 		return getValueFromNull();
@@ -244,7 +244,7 @@ Value * SFjoin() {
 		node->next = newnode;
 	}
 	Value * ret = copyValue(registerA);
-	if (tmp1->node == newnode)tmp1->node == NULL;
+	if (tmp1->node == newnode)tmp1->node = NULL;
 	else node->next = NULL;
 	return ret;
 }
@@ -262,13 +262,13 @@ Value * getValueFromSubString(const char * str, int st, int ed) {
 		printf("Runtime Error: Command `first` cannot be applied for NULL word.\n");
 		return getValueFromNull();
 	}
-	str = substring(str, st, ed);
-	Value * ret = getValueFromStr(str);
-	free(str);
+	char * sta = substring(str, st, ed);
+	Value * ret = getValueFromStr(sta);
+	free(sta);
 	return ret;
 }
 
-Value * SFfirst() {
+Value * SFfirst(void) {
 	if (registerA->type == VLiteral)
 		return getValueFromSubString(registerA->data->word, 0, 0);
 	if (registerA->type != VList) {
@@ -281,7 +281,7 @@ Value * SFfirst() {
 	}
 	return copyValue(registerA->data->list->node->data);
 }
-Value * SFlast() {
+Value * SFlast(void) {
 	if (registerA->type == VLiteral) {
 		int len = strlen(registerA->data->word);
 		return getValueFromSubString(registerA->data->word,len-1, len-1);
@@ -298,7 +298,7 @@ Value * SFlast() {
 	while (node->next != NULL)node = node->next;
 	return copyValue(node->data);
 }
-Value * SFbutfirst() {
+Value * SFbutfirst(void) {
 	if (registerA->type == VLiteral) {
 		int len = strlen(registerA->data->word);
 		return getValueFromSubString(registerA->data->word, 1, len - 1);
@@ -317,7 +317,7 @@ Value * SFbutfirst() {
 	registerA->data->list->node = node;
 	return ret;
 }
-Value * SFbutlast() {
+Value * SFbutlast(void) {
 	if (registerA->type == VLiteral) {
 		int len = strlen(registerA->data->word);
 		return getValueFromSubString(registerA->data->word, 0, len - 2);
@@ -362,7 +362,7 @@ Value * SFitem(void) {
 			printf("Runtime Error: illegal length.\n");
 			return getValueFromNull();
 		}
-		return getValueFromSubString(registerB->data->word, registerB->data->integer - 1, registerB->data->integer - 1);
+		return getValueFromSubString(registerB->data->word, (int)registerB->data->integer - 1, (int)registerB->data->integer - 1);
 	}
 	else {
 		ListNode * node = registerA->data->list->node;

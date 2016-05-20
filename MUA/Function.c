@@ -4,7 +4,7 @@
 #include "Function.h"
 #include <stdio.h>
 #include <stdlib.h>
-
+#include <string.h>
 
 inline Value * SFprint(void) {
 	printValue(registerA);
@@ -32,11 +32,11 @@ inline Value * SFthing(void) {
 	}
 	return ret;
 }
-int isInFunction() {
+int isInFunction(void) {
 	if (symbolTable->next->next == NULL)return 0;
 	return 1;
 }
-Value * SFoutput() {
+Value * SFoutput(void) {
 	if (!isInFunction()) {
 		printf("Runtime Error: `output` only can be used in function.\n");		
 	}
@@ -45,16 +45,16 @@ Value * SFoutput() {
 	}
 	return getValueFromNull();
 }
-Value * SFstop() {
+Value * SFstop(void) {
 	Value * ret = (Value *)malloc(sizeof(Value));
 	ret->type = VFuncStop;
 	return ret;
 }
-Value * SFendl() {
+Value * SFendl(void) {
 	printf("\n");
 	return getValueFromNull();
 }	
-Value * SFerase() {
+Value * SFerase(void) {
 	if (registerA->type != VLiteral) {
 		printf("Syntax Error: `erase` only can recieve `word` as argument.\n");
 		return getValueFromNull();
@@ -77,7 +77,7 @@ Value * SFisname(void) {
 	else return SFfalse();
 }
 
-Value * SFrepeat() {
+Value * SFrepeat(void) {
 	if (registerA->type != VInteger || registerA->data->integer<0) {
 		printf("Syntax Error: `repeat` only can recieve positive integer as first argument.\n");
 		return getValueFromNull();
@@ -86,40 +86,34 @@ Value * SFrepeat() {
 		printf("Syntax Error: `repeat` only can recieve list as second argument.\n");
 		return getValueFromNull();
 	}
-	int times = registerA->data->integer;
+	int times = (int)registerA->data->integer;
 	ListNode * tmp = registerB->data->list->node;
 	for (int i = 1; i <= times; i++) {
 		ListInstance * listInstance = (ListInstance *)malloc(sizeof(ListInstance));
 		listInstance->now = tmp;
-		while (listInstance->now != NULL) {
-			Value * tmp = eval(listInstance);
-			if (tmp->type == VFuncStop) {
-				freeValue(tmp);
-				i = times;
-				break;
-			}
-			freeValue(tmp);
-		}
+		call(listInstance);
 	}
 	return getValueFromNull();
 }
 
-Value * SFread() {
+Value * SFread(void) {
 	char * buffer = (char *)malloc(sizeof(char) * EXCHANGE_BUFFER_SIZE);
 	scanf("%s", buffer);
-	TokenList * tokenList = getTokenListFromBuffer(buffer);
+	Buffer *buf = (Buffer *)malloc(sizeof(Buffer));
+	buf->data = buffer;
+	buf->st = 0;
+	buf->ed = strlen(buffer);
+	buffer[strlen(buffer)] = '\n';
+	TokenList * tokenList = getTokenListFromBuffer(buf);
 	List * list = getListFromTokenList(tokenList);
-	Value * ret = copyValue(list->node);
+	Value * ret = copyValue(list->node->data);
 	free(buffer);
 	//todo::freeTokenList();
 	//todo::freeList();
 	return ret;
 }
-Value * SFreadlist() {
-	char * buffer = (char *)malloc(sizeof(char) * EXCHANGE_BUFFER_SIZE);
-	int now = 0;
-	while ((buffer[now] = getchar()) != 'n')now++;
-	buffer[now] = 0;
+Value * SFreadlist(void) {
+	Buffer * buffer = getBufferFromConsole();
 	TokenList * tokenList = getTokenListFromBuffer(buffer);
 	List * list = getListFromTokenList(tokenList);
 	Value * ret = (Value *)malloc(sizeof(Value));
@@ -139,7 +133,7 @@ Value * SFrun(void) {
 		return getValueFromNull();
 	}
 	ListInstance * listInstance = (ListInstance *)malloc(sizeof(ListInstance));
-	listInstance->now = registerA->data->list;
+	listInstance->now = registerA->data->list->node;
 	call(listInstance);
 	return getValueFromNull();
 }
@@ -154,12 +148,12 @@ Value * SFif(void) {
 	}
 	if (registerA->data->integer == 1){
 		ListInstance * listInstance = (ListInstance *)malloc(sizeof(ListInstance));
-		listInstance->now = registerB->data->list;
+		listInstance->now = registerB->data->list->node;
 		call(listInstance);
 	}
 	else {
 		ListInstance * listInstance = (ListInstance *)malloc(sizeof(ListInstance));
-		listInstance->now = registerC->data->list;
+		listInstance->now = registerC->data->list->node;
 		call(listInstance);
 	}
 	return getValueFromNull();
@@ -201,16 +195,15 @@ Value * SFload(void) {
 		printf("Syntax Error: `save` only can recieve `word` as first argument.\n");
 		return getValueFromNull();
 	}
-	char * buffer = (char *)malloc(sizeof(char) * 4096);
+	Buffer * buffer = getBufferFromFile(registerA->data->word);
 	if (buffer == NULL) {
 		printf("Runtime Error: invaild filename.\n");
 		return getValueFromNull();
 	}
-	buffer = getBufferFromFile(registerA->data->word);
 	TokenList * tokenList = getTokenListFromBuffer(buffer);
 	List * list = getListFromTokenList(tokenList);
 	ListInstance * listInstance = (ListInstance *)malloc(sizeof(ListInstance));
-	listInstance->now = registerA->data->list;
+	listInstance->now = list->node;
 	call(listInstance);
 	return getValueFromNull();
 }
@@ -219,7 +212,7 @@ Value * SFsave(void) {
 		printf("Syntax Error: `save` only can recieve `word` as first argument.\n");
 		return getValueFromNull();
 	}
-	FILE * tmp = freopen(registerA->data->word, "w", stdout);
+	FILE * tmp = fopen(registerA->data->word, "w");
 	if (tmp == NULL) {
 		printf("Runtime Error: invaild filename.\n");
 		return getValueFromNull();
@@ -228,13 +221,13 @@ Value * SFsave(void) {
 	for (int i = 0; i < len; i++) {
 		HashNode * hn = symbolTable->hashMap->data[i];
 		while (hn != NULL) {
-			printf("make \'%s ", hn->key);
-			printRawValue(hn->data);
-			printf("\n");
+			fprintf(tmp,"make \'%s ", hn->key);
+			printRawValue(tmp,hn->data);
+			fprintf(tmp,"\n");
 			hn = hn->next;
 		}
 	}
-	fclose(stdout);
+	fclose(tmp);
 	return getValueFromNull();
 }
 
@@ -250,7 +243,7 @@ void initFunction(SysFunc * sysFunc ,int length) {
 	}
 }
 
-void initSystemFunction() {
+void initSystemFunction(void) {
 	SysFunc sysFunc[] = {
 		{ "add",SFadd,2 },
 		{ "sub",SFsub,2 },

@@ -21,4 +21,5 @@ void setElement(HashMap * hashMap, const char * key, const Value * data);
 Value * getElement(HashMap * hashMap, const char * key);
 
 void removeElement(HashMap * hashMap, const char * key);
+void freeHashMap(HashMap * hashMap);
 #endif

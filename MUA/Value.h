@@ -1,6 +1,7 @@
 #pragma once
 #ifndef VALUE_H  
 #define VALUE_H  
+#include <stdio.h>
 
 typedef struct SValue Value;
 typedef Value*(*FunctionData)(void);
@@ -48,5 +49,5 @@ Value * getValueFromReal(double x);
 Value * getValueFromStr(const char * x);
 Value * getValueFromNull(void);
 void freeList(List * value);
-void printRawValue(const Value * value);
+void printRawValue(FILE * f,const Value * value);
 #endif

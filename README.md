@@ -1,5 +1,5 @@
 # MakeUp Programming Language  
-作者 : 张程易  
+作者 : 张程易  浙江大学 求是科学班(计算机) 1501
 
 本项目是翁恺老师的课程“C程序设计专题”的作业，在MIT协议下开源。  
 本项目全部使用C语言完成，开发环境是Visual Studio 2015 community edition.
@@ -9,7 +9,7 @@
 ============================
 
 由于平台相关：暂不完成。
-* `wait <number>`：等待number个ms //PLATFORM RELATIVE
+* `wait <number>`：等待number个ms
 
 下面是原题目
 ============================
