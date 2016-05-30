@@ -1,4 +1,4 @@
-//����ļ��ṩһ����ϣ��
+﻿//这个文件提供一个哈希表
 #include<stdlib.h>
 #include<string.h>
 #include "Value.h"

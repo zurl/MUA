@@ -1,0 +1,2 @@
+make 'list [ make 'a 1 make 'b [ [ ] [ ] ] ]
+print thing 'list

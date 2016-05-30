@@ -1,0 +1,24 @@
+//MUA Test File
+//Part1
+make 'var1 1
+make 'var2 1.0
+make 'var3 -1
+make 'var4 'hello
+make 'var5 [ 'test ]
+make 'var6 [ [ ] [ print 'helloworld endl ] ]
+poall
+save '1.txt
+erall
+print 'test endl
+poall
+print 'test2 endl
+load '1.txt
+poall
+//Part 2
+print eq 1 1
+print eq 1 2
+print gt 1 1
+print gt 2 1
+print lt 1 1
+print lt 1 2
+//part 3

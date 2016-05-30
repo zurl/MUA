@@ -1,4 +1,4 @@
-//Õâ¸öÎÄ¼ş¸ºÔğ½âÊÍ³ÌĞò
+ï»¿//è¿™ä¸ªæ–‡ä»¶è´Ÿè´£è§£é‡Šç¨‹åº
 #include "Value.h"
 #include "Input.h"
 #include <stdio.h>

@@ -1,4 +1,4 @@
-//Õâ¸öÎÄ¼þÌá¹©»ù±¾Êý¾ÝÀàÐÍ
+ï»¿//è¿™ä¸ªæ–‡ä»¶æä¾›åŸºæœ¬æ•°æ®ç±»åž‹
 #include "Value.h"
 #include<stdio.h>
 #include "Input.h"
@@ -53,7 +53,7 @@ void printRawValue(FILE * f,const Value * value) {
 	if (value->type == VBoolean)if (value->data->integer == 1)fprintf(f," true "); else fprintf(f," false ");
 	if (value->type == VList)printRawList(f,value->data->list);
 }
-//»ù±¾Êý¾ÝÀàÐÍ
+//åŸºæœ¬æ•°æ®ç±»åž‹
 void freeValue(Value * value) {
 	if (value->type == VWord || value->type == VLiteral) {
 		free(value->data->word);

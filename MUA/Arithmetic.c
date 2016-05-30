@@ -27,30 +27,30 @@ Value * abstractCalculate(IntHandeler i, RealHandeler r) {// $x,$y
 	}
 }
 /* ADD */
-inline long long SFaddI(long long a, long long b) {
+long long SFaddI(long long a, long long b) {
 	return a + b;
 }
-inline double SFaddD(double a, double b) {
+double SFaddD(double a, double b) {
 	return a + b;
 }
 Value * SFadd(void) {
 	return abstractCalculate(SFaddI, SFaddD);
 }
 /* SUB */
-inline long long SFsubI(long long a, long long b) {
+long long SFsubI(long long a, long long b) {
 	return a - b;
 }
-inline double SFsubD(double a, double b) {
+double SFsubD(double a, double b) {
 	return a - b;
 }
 Value * SFsub(void) {
 	return abstractCalculate(SFsubI, SFsubD);
 }
 /* MUL */
-inline long long SFmulI(long long a, long long b) {
+long long SFmulI(long long a, long long b) {
 	return a * b;
 }
-inline double SFmulD(double a, double b) {
+ double SFmulD(double a, double b) {
 	return a * b;
 }
 Value * SFmul(void) {
@@ -58,10 +58,10 @@ Value * SFmul(void) {
 }
 /* DIV */
 
-inline long long SFdivI(long long a, long long b) {
+long long SFdivI(long long a, long long b) {
 	return a / b;
 }
-inline double SFdivD(double a, double b) {
+double SFdivD(double a, double b) {
 	return a / b;
 }
 Value * SFdiv(void) {

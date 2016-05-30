@@ -1,11 +1,9 @@
-//Õâ¸öÎÄ¼þ´¦ÀíÊäÈë
-//Ö§³ÖÁ½ÖÖÊäÈë·½Ê½£º½»»¥Ê½ÊäÈëºÍÎÄ¼þÊäÈë
-#include<stdio.h>
+ï»¿#include<stdio.h>
 #include<stdlib.h>
 #include<string.h>
 #include "Input.h"
 #include "Value.h"
-//×Ö·û´¦Àí
+//å­—ç¬¦å¤„ç†
 
 char * copyString(const char *src) {
 	char *ret = (char *)malloc(sizeof(char)*(strlen(src) + 1));
@@ -71,7 +69,7 @@ Buffer * getBufferFromConsole(void) {
 	}
 	return buffer;
 }
-//´Ê·¨·ÖÎö
+//è¯æ³•åˆ†æž
 
 int isNum(char x) {
 	return x >= '0' && x <= '9';
@@ -156,7 +154,7 @@ TokenList * getTokenListFromBuffer(Buffer * buffer) {
 	return tokenList;
 }
 
-//Óï·¨·ÖÎö
+//è¯­æ³•åˆ†æž
 
 List * getListFromTokenList(TokenList * tokenList) {
 	if (tokenList->now->type != TRSB) {
