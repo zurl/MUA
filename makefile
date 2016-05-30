@@ -7,11 +7,11 @@ OBJECTS=  $(OUTDIR)/Main.o $(OUTDIR)/Arithmetic.o $(OUTDIR)/Function.o $(OUTDIR)
 
 all : $(OUTDIR) mua
 
-$(OUTDIR) :
-            mkdir $@
+$(OUTDIR) : 
+	mkdir $@
 
 mua : $(OBJECTS)
-            $(LINK) $@ -lm $(OBJECTS)
+	$(LINK) $@ -lm $(OBJECTS)
 
 $(OUTDIR)/%.o : $(SOURCEDIR)/%.c
-            $(CC) $(CFLAG) $@ $<
+	$(CC) $(CFLAG) $@ $<
