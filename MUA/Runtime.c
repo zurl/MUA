@@ -49,9 +49,9 @@ Value * eval(ListInstance * listInstance) {
 			||command->data->list->node->data->type!=VList
 			||command->data->list->node->next->data->type != VList))) {
 			//CANT EXCUTE
-			listInstance->now = listInstance->now->next;
 			if(command == NULL) printf("Runtime Error : `%s` is undefined .\n", listInstance->now->data->data->word);
 			else printf("Runtime Error : `%s` is not a callable value.\n", listInstance->now->data->data->word);
+			listInstance->now = listInstance->now->next;
 			return getValueFromNull();
 		}
 		//create new symbol table
