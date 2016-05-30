@@ -29,7 +29,7 @@ int main(int argc,char ** argv) {
 		}
 	}
 	else {
-		Buffer * buffer = getBufferFromFile(argv[0]);
+		Buffer * buffer = getBufferFromFile(argv[1]);
 		TokenList * tokenList = getTokenListFromBuffer(buffer);
 		List * list = getListFromTokenList(tokenList);
 		ListInstance * newInstance = (ListInstance *)malloc(sizeof(ListInstance));
