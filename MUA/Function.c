@@ -303,7 +303,7 @@ void initGlobalFunction(void) {
 	SysFunc globalFunc[] = {
 		{ "if", SFif,3 },
 		{ "pi", SFpi,0 },
-		{ "run",SFrun,0 }
+		{ "run",SFrun,1}
 	};
 	initFunction(globalFunc, sizeof(globalFunc) / sizeof(SysFunc));
 }
