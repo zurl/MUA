@@ -66,8 +66,9 @@ Value * eval(ListInstance * listInstance) {
 			listInstance->now = listInstance->now->next;
 			ListNode * param = command->data->list->node->data->data->list->node;
 			while (param != NULL) {
-				if (param->data->type != TLiteral) {
-					//CANT EXCUTE
+				if (param->data->type != VLiteral) {
+					printf("Runtime Error : illegal parameters");
+					return getValueFromNull();
 				}
 				Value * argu = eval(listInstance);
 				setSymbol(symbolTable, param->data->data->word, argu);

@@ -32,7 +32,7 @@ void printValue(const Value * value) {
 	if (value->type == VReal)printf("%0.2f", value->data->real);
 	if (value->type == VWord)printf("%s", value->data->word);
 	if (value->type == VLiteral)printf("%s", value->data->word);
-	if (value->type == VBoolean)if (value->data->integer == 1)printf("true");else printf("false");
+	if (value->type == VBoolean) { if (value->data->integer == 1)printf("true"); else printf("false"); }
 	if (value->type == VList)printList(value->data->list);
 }
 void printRawList(FILE * f, const List * value) {
@@ -50,7 +50,7 @@ void printRawValue(FILE * f,const Value * value) {
 	if (value->type == VReal)fprintf(f," %f ", value->data->real);
 	if (value->type == VWord)fprintf(f," %s ", value->data->word);
 	if (value->type == VLiteral)fprintf(f," \'%s ", value->data->word);
-	if (value->type == VBoolean)if (value->data->integer == 1)fprintf(f," true "); else fprintf(f," false ");
+	if (value->type == VBoolean) { if (value->data->integer == 1)fprintf(f, " true "); else fprintf(f, " false "); }
 	if (value->type == VList)printRawList(f,value->data->list);
 }
 //基本数据类型
