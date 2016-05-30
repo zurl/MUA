@@ -37,6 +37,7 @@
     <ClInclude Include="Value.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\makefile" />
     <None Include="hello.mua" />
     <None Include="test.mua" />
   </ItemGroup>

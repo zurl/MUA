@@ -67,6 +67,9 @@
     <None Include="hello.mua">
       <Filter>资源文件</Filter>
     </None>
+    <None Include="..\makefile">
+      <Filter>资源文件</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Text Include="old.txt">

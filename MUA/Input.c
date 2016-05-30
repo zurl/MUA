@@ -12,10 +12,14 @@ char * copyString(const char *src) {
 }
 
 Buffer * getBufferFromFile(char * fileName) {
+	if (fileName == NULL) {
+		printf("File cannot be opened/n");
+		exit(0);
+	}
 	FILE * file = fopen(fileName, "r");
 	if (file == NULL) {
 		printf("File cannot be opened/n");
-		return NULL;
+		exit(0);
 	}
 	Buffer * buffer = malloc(sizeof(Buffer));
 	buffer->st = 0;
@@ -108,7 +112,7 @@ TokenList * getTokenListFromBuffer(Buffer * buffer) {
 			token->next = node;
 			node = token;
 			st = buffer->st;
-			if (c == '\'') {
+			if (c == '\'' || c == '\"') {
 				token->type = TLiteral;
 			}
 			else if (isNum(c) || c== '-') {

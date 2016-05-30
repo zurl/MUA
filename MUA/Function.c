@@ -190,6 +190,9 @@ Value * SFerall(void) {
 	symbolTable->next = tmp;
 	return getValueFromNull();
 }
+Value * SFquit(void) {
+	exit(0);
+}
 Value * SFload(void) {
 	if (registerA->type != VLiteral) {
 		printf("Syntax Error: `save` only can recieve `word` as first argument.\n");
@@ -291,7 +294,8 @@ void initSystemFunction(void) {
 		{ "load",SFload,1},
 		{ "save",SFsave,1},
 		{ "erall",SFerall,0},
-		{ "poall",SFpoall,0}
+		{ "poall",SFpoall,0},
+		{ "quit",SFquit,0 }
 	};
 	initFunction(sysFunc, sizeof(sysFunc) / sizeof(SysFunc));
 }
