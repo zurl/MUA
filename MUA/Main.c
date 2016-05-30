@@ -4,7 +4,7 @@
 #include <stdlib.h>
 #include <time.h>
 #include <stdlib.h>
-int main(int argc,char * argv) {
+int main(int argc,char ** argv) {
 	srand((unsigned)time(NULL));
 	initSystemSymbolTable();
 	initSystemFunction();
